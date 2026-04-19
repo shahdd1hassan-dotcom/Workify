@@ -1,0 +1,342 @@
+/* =============================================================
+   LAYOUT.CSS — Page Structure & Grid System
+   Handles the overall page skeleton: topbar, sidebar,
+   main content area, grid columns, and responsive breakpoints.
+   ============================================================= */
+
+/* -------------------------
+   Container
+   Centers content and caps width at 1280px.
+   Use this on any section that shouldn't stretch full screen.
+   ------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+/* -------------------------
+   12-Column Grid
+   Usage:  <div class="grid">
+             <div class="col-6">half</div>
+             <div class="col-6">half</div>
+           </div>
+   ------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-6);
+}
+
+/* Generate column span classes: col-1 through col-12 */
+.col-1 {
+  grid-column: span 1;
+}
+.col-2 {
+  grid-column: span 2;
+}
+.col-3 {
+  grid-column: span 3;
+}
+.col-4 {
+  grid-column: span 4;
+}
+.col-5 {
+  grid-column: span 5;
+}
+.col-6 {
+  grid-column: span 6;
+}
+.col-7 {
+  grid-column: span 7;
+}
+.col-8 {
+  grid-column: span 8;
+}
+.col-9 {
+  grid-column: span 9;
+}
+.col-10 {
+  grid-column: span 10;
+}
+.col-11 {
+  grid-column: span 11;
+}
+.col-12 {
+  grid-column: span 12;
+}
+
+/* -------------------------
+   Page Wrapper
+   The main flex container that holds sidebar + content.
+   Used on authenticated (dashboard) pages.
+   
+   On public pages (landing, browse, etc.) you likely
+   won't use .page-wrapper — just .topbar + .main-content.
+   ------------------------- */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* -------------------------
+   Topbar (Header)
+   Sticky bar at the top of every page.
+   Glass-effect with a blurred background.
+   The actual HTML is in components/header.html.
+   ------------------------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  background: rgba(15, 14, 23, 0.8); /* semi-transparent bg-base */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border-bottom: var(--border-subtle);
+  z-index: var(--z-topbar);
+}
+
+/* -------------------------
+   Sidebar
+   Fixed left column on dashboard pages.
+   260px full  →  64px icon rail on tablet  →  bottom nav on mobile.
+   The actual HTML is in components/sidebar.html.
+   ------------------------- */
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border-right: var(--border-subtle);
+  padding: var(--space-6) var(--space-4);
+  z-index: var(--z-sidebar);
+  transition: width 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* When the sidebar is collapsed (toggled via JS) */
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+/* Hide labels when sidebar is collapsed */
+.sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+/* Sidebar Links */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  color: var(--text-muted);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.sidebar-link:hover,
+.sidebar-link.active {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+.sidebar-link.active {
+  background: rgba(91, 79, 233, 0.1);
+  color: var(--primary);
+}
+.sidebar-link svg {
+  width: 20px;
+  height: 20px;
+}
+.sidebar-footer {
+  margin-top: auto;
+  border-top: var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.sidebar-link .nav-badge {
+  margin-left: auto;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* -------------------------
+   Main Content
+   The scrollable area next to the sidebar.
+   On public pages (no sidebar), set margin-left to 0.
+   ------------------------- */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: var(--space-6);
+  padding-top: calc(var(--topbar-height) + var(--space-6));
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* When sidebar is collapsed, shift content over */
+.main-content.sidebar-collapsed {
+  margin-left: var(--sidebar-collapsed);
+}
+
+/* Public pages don't have a sidebar — no left margin needed */
+.main-content.no-sidebar {
+  margin-left: 0;
+}
+
+/* -------------------------
+   Section spacing
+   Consistent vertical rhythm between page sections.
+   ------------------------- */
+.section {
+  padding: var(--space-16) 0;
+}
+.section-sm {
+  padding: var(--space-8) 0;
+}
+
+/* -------------------------
+   Two-Column Layouts
+   Handy for pages like Job Details (70/30 split)
+   or Review Proposals (list/detail split).
+   ------------------------- */
+.split-layout {
+  display: flex;
+  gap: var(--space-6);
+}
+.split-layout .split-main {
+  flex: 7; /* roughly 70% */
+  min-width: 0; /* prevent content from blowing out */
+}
+.split-layout .split-aside {
+  flex: 3; /* roughly 30% */
+  min-width: 0;
+}
+
+/* Sticky sidebar card (e.g. the "Apply Now" panel on Job Details) */
+.sticky-aside {
+  position: sticky;
+  top: calc(var(--topbar-height) + var(--space-6));
+}
+
+/* =============================================================
+   RESPONSIVE BREAKPOINTS
+   Desktop  ≥ 1280px  → full layout (already the default above)
+   Tablet   768–1279  → sidebar collapses to icon rail
+   Mobile   < 768     → single column, sidebar becomes bottom nav
+   ============================================================= */
+
+/* --- Tablet --- */
+@media (max-width: 1279px) {
+  /* Auto-collapse sidebar to icon rail */
+  .sidebar {
+    width: var(--sidebar-collapsed);
+  }
+  .sidebar .sidebar-label {
+    display: none;
+  }
+  .main-content {
+    margin-left: var(--sidebar-collapsed);
+  }
+
+  /* Grids drop to fewer columns */
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12 {
+    grid-column: span 6;
+  }
+
+  /* 70/30 split becomes stacked */
+  .split-layout {
+    flex-direction: column;
+  }
+}
+
+/* --- Mobile --- */
+@media (max-width: 767px) {
+  /* Sidebar becomes a bottom nav bar */
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    height: 56px;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-right: none;
+    border-top: var(--border-subtle);
+    padding: var(--space-2);
+    overflow: visible;
+  }
+  .sidebar .sidebar-label {
+    display: none;
+  }
+  /* Hide elements that don't belong in bottom nav */
+  .sidebar .sidebar-logo,
+  .sidebar .sidebar-collapse-btn,
+  .sidebar .sidebar-role-badge {
+    display: none;
+  }
+
+  /* Content takes full width; bottom padding for the nav bar */
+  .main-content {
+    margin-left: 0;
+    padding-bottom: calc(56px + var(--space-6));
+  }
+
+  /* Everything is single column on mobile */
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12 {
+    grid-column: span 1;
+  }
+
+  /* Container uses smaller padding on small screens */
+  .container {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}

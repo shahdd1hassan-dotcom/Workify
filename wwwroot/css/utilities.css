@@ -1,0 +1,510 @@
+/* =============================================================
+   UTILITIES.CSS — Quick Helper Classes
+   These are small, single-purpose classes you can slap onto
+   any element instead of writing one-off CSS.
+   Think of them like shortcuts.
+   ============================================================= */
+
+/* Labels / Caps */
+.label-caps {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* =========================
+   DISPLAY
+   ========================= */
+.hidden {
+  display: none !important;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.inline {
+  display: inline;
+}
+
+/* =========================
+   FLEXBOX
+   ========================= */
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-1 {
+  flex: 1;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Alignment */
+.items-start {
+  align-items: flex-start;
+}
+.items-center {
+  align-items: center;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-stretch {
+  align-items: stretch;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-around {
+  justify-content: space-around;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+.self-center {
+  align-self: center;
+}
+.self-end {
+  align-self: flex-end;
+}
+
+/* =========================
+   GAP  (uses the spacing scale from variables.css)
+   ========================= */
+.gap-1 {
+  gap: var(--space-1);
+}
+.gap-2 {
+  gap: var(--space-2);
+}
+.gap-3 {
+  gap: var(--space-3);
+}
+.gap-4 {
+  gap: var(--space-4);
+}
+.gap-6 {
+  gap: var(--space-6);
+}
+.gap-8 {
+  gap: var(--space-8);
+}
+
+/* =========================
+   MARGIN
+   m  = all sides
+   mt = top, mb = bottom, ml = left, mr = right
+   mx = left + right, my = top + bottom
+   ========================= */
+.m-0 {
+  margin: 0;
+}
+.m-auto {
+  margin: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mt-1 {
+  margin-top: var(--space-1);
+}
+.mt-2 {
+  margin-top: var(--space-2);
+}
+.mt-3 {
+  margin-top: var(--space-3);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mt-6 {
+  margin-top: var(--space-6);
+}
+.mt-8 {
+  margin-top: var(--space-8);
+}
+.mt-12 {
+  margin-top: var(--space-12);
+}
+
+.mb-1 {
+  margin-bottom: var(--space-1);
+}
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+.mb-3 {
+  margin-bottom: var(--space-3);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+
+.ml-2 {
+  margin-left: var(--space-2);
+}
+.ml-4 {
+  margin-left: var(--space-4);
+}
+.mr-2 {
+  margin-right: var(--space-2);
+}
+.mr-4 {
+  margin-right: var(--space-4);
+}
+
+/* =========================
+   PADDING
+   Same naming pattern as margin.
+   ========================= */
+.p-0 {
+  padding: 0;
+}
+.p-2 {
+  padding: var(--space-2);
+}
+.p-3 {
+  padding: var(--space-3);
+}
+.p-4 {
+  padding: var(--space-4);
+}
+.p-6 {
+  padding: var(--space-6);
+}
+.p-8 {
+  padding: var(--space-8);
+}
+
+.px-4 {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+.px-6 {
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+.py-2 {
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+.py-4 {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+.py-6 {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+.py-8 {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+/* =========================
+   TEXT
+   ========================= */
+
+/* Colors */
+.text-primary {
+  color: var(--text-primary);
+}
+.text-muted {
+  color: var(--text-muted);
+}
+.text-accent {
+  color: var(--accent);
+}
+.text-success {
+  color: var(--success);
+}
+.text-warning {
+  color: var(--warning);
+}
+.text-danger {
+  color: var(--danger);
+}
+.text-purple {
+  color: var(--primary-light);
+}
+
+/* Alignment */
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+/* Size */
+.text-xs {
+  font-size: var(--fs-xs);
+}
+.text-sm {
+  font-size: var(--fs-sm);
+}
+.text-base {
+  font-size: var(--fs-base);
+}
+.text-md {
+  font-size: var(--fs-md);
+}
+.text-lg {
+  font-size: var(--fs-lg);
+}
+.text-xl {
+  font-size: var(--fs-xl);
+}
+.text-2xl {
+  font-size: var(--fs-2xl);
+}
+.text-3xl {
+  font-size: var(--fs-3xl);
+}
+.text-4xl {
+  font-size: var(--fs-4xl);
+}
+
+/* Weight */
+.font-regular {
+  font-weight: var(--fw-regular);
+}
+.font-medium {
+  font-weight: var(--fw-medium);
+}
+.font-semibold {
+  font-weight: var(--fw-semibold);
+}
+.font-bold {
+  font-weight: var(--fw-bold);
+}
+
+/* Font family shortcuts */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Misc text */
+.uppercase {
+  text-transform: uppercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.tracking-wide {
+  letter-spacing: 0.08em;
+}
+.leading-tight {
+  line-height: 1.2;
+}
+.leading-normal {
+  line-height: 1.6;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Gradient text — for hero numbers, step indicators, etc. */
+.text-gradient {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =========================
+   BORDERS & ROUNDED
+   ========================= */
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+.rounded-full {
+  border-radius: 50%;
+}
+.rounded-pill {
+  border-radius: var(--radius-pill);
+}
+
+.border {
+  border: var(--border-subtle);
+}
+.border-b {
+  border-bottom: var(--border-subtle);
+}
+.border-t {
+  border-top: var(--border-subtle);
+}
+
+/* =========================
+   BACKGROUNDS
+   ========================= */
+.bg-base {
+  background-color: var(--bg-base);
+}
+.bg-surface {
+  background-color: var(--bg-surface);
+}
+.bg-elevated {
+  background-color: var(--bg-elevated);
+}
+
+/* =========================
+   WIDTH & HEIGHT
+   ========================= */
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* =========================
+   POSITION
+   ========================= */
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* =========================
+   OVERFLOW
+   ========================= */
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-auto {
+  overflow: auto;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* =========================
+   CURSOR
+   ========================= */
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-default {
+  cursor: default;
+}
+
+/* =========================
+   TRANSITIONS
+   Quick, smooth transitions for interactive elements.
+   ========================= */
+.transition {
+  transition: all 0.2s ease;
+}
+.transition-fast {
+  transition: all 0.15s ease;
+}
+.transition-slow {
+  transition: all 0.4s ease;
+}
+
+/* =========================
+   OPACITY
+   ========================= */
+.opacity-50 {
+  opacity: 0.5;
+}
+.opacity-75 {
+  opacity: 0.75;
+}
+.opacity-0 {
+  opacity: 0;
+}
+
+/* =========================
+   RESPONSIVE VISIBILITY
+   Show/hide elements at certain breakpoints.
+   ========================= */
+
+/* Hide on mobile only */
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Hide on tablet and smaller */
+@media (max-width: 1279px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* Show only on mobile */
+@media (min-width: 768px) {
+  .show-mobile-only {
+    display: none !important;
+  }
+}

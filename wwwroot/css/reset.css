@@ -1,0 +1,146 @@
+/* =============================================================
+   RESET.CSS — Modern CSS Reset + Base Styles
+   Gives us a clean, predictable starting point on all browsers.
+   ============================================================= */
+
+/* --- Google Fonts import ---
+   Sora  → headings & hero text
+   Inter → body text & labels
+   JetBrains Mono → code snippets, IDs
+*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Sora:wght@600;700;800&display=swap');
+
+/* --- Box-sizing reset ---
+   Makes padding/border part of the element's width.
+   No more surprise overflows!
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Base HTML & body styles --- */
+html {
+  scroll-behavior: smooth;          /* Smooth anchor scrolling */
+  -webkit-text-size-adjust: 100%;   /* Prevent iOS text inflation */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+
+  /* Smoother font rendering on macOS/iOS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Prevent horizontal scroll from animations/overflow */
+  overflow-x: hidden;
+}
+
+/* --- Headings ---
+   All headings use Sora by default.
+   Specific sizes should be set per-page, but here are sensible defaults.
+*/
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 { font-size: var(--fs-4xl); font-weight: var(--fw-bold); }
+h2 { font-size: var(--fs-3xl); }
+h3 { font-size: var(--fs-2xl); }
+h4 { font-size: var(--fs-xl); }
+h5 { font-size: var(--fs-lg); }
+h6 { font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+
+/* --- Paragraphs & body text --- */
+p {
+  margin-bottom: var(--space-4);
+  color: var(--text-muted);
+}
+
+/* --- Links --- */
+a {
+  color: var(--primary-light);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--primary);
+}
+
+/* --- Lists (reset bullets by default — add them back when needed) --- */
+ul, ol {
+  list-style: none;
+}
+
+/* --- Images & media ---
+   Images are responsive by default and won't overflow containers.
+*/
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* --- Form elements ---
+   Inherit font from parent so inputs match the site typography.
+*/
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* --- Button reset ---
+   Remove default browser button styling.
+*/
+button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Table reset --- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* --- Misc --- */
+hr {
+  border: none;
+  border-top: var(--border-subtle);
+  margin: var(--space-8) 0;
+}
+
+/* Screen-reader only utility (keep it here so it's always available) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Selection highlight color */
+::selection {
+  background: rgba(91, 79, 233, 0.3);
+  color: var(--text-primary);
+}

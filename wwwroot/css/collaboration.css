@@ -1,0 +1,807 @@
+/* =============================================================
+   COLLABORATION.CSS — Shared Pages: Messages, Contracts, Wallet, Disputes
+   These styles build on top of variables.css, layout.css, and
+   components.css. They add collaboration-specific components only.
+   ============================================================= */
+
+/* ─────────────────────────────────────────
+   ROOT — match the freelancer-dashboard variable names
+   which the sidebar component expects.
+   (layout.css uses --sidebar-width; freelancer-dashboard.css
+    uses --sidebar-w. We declare both so either component works.)
+   ───────────────────────────────────────── */
+:root {
+  --sidebar-w: 260px;          /* alias used by freelancer-dashboard.css */
+  --topbar-h:  64px;           /* alias used by freelancer-dashboard.css */
+}
+
+/* ─────────────────────────────────────────
+   SIDEBAR — copy the key freelancer-dashboard.css
+   sidebar styles so nav-item, logo-icon, avatar, etc.
+   render correctly on collab pages (which load layout.css,
+   not freelancer-dashboard.css).
+   ───────────────────────────────────────── */
+
+/* Sidebar logo bar */
+.sidebar-logo {
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #5b4fe9, #7b72f0);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Sora", sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(91,79,233,0.4);
+}
+
+.logo-text {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary, #f5f4ff);
+  letter-spacing: -0.02em;
+}
+
+/* Sidebar nav body */
+.sidebar-nav {
+  flex: 1;
+  padding: 24px 12px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #8b8aa8);
+  text-transform: uppercase;
+  padding: 0 8px;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+.nav-section-label:first-child { margin-top: 0; }
+
+/* Nav item */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted, #8b8aa8);
+  position: relative;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  user-select: none;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary, #f5f4ff);
+}
+.nav-item.active {
+  background: rgba(91,79,233,0.15);
+  color: var(--text-primary, #f5f4ff);
+}
+.nav-item.active i { color: var(--primary-light, #7b72f0); }
+.nav-item i { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Nav badge (message count) */
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent, #f97316);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 7px;
+  min-width: 20px;
+  text-align: center;
+  line-height: 18px;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sidebar-footer:hover { background: rgba(255,255,255,0.03); }
+
+/* Avatar circle */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5b4fe9, #f97316);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sidebar-footer-info { flex: 1; min-width: 0; }
+.sidebar-footer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #f5f4ff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-footer-role {
+  font-size: 11px;
+  color: var(--text-muted, #8b8aa8);
+  margin-top: 1px;
+}
+
+
+/* ─────────────────────────────────────────
+   BODY LAYOUT
+   Must be `display:flex` (row) so the fixed
+   sidebar and the scrollable page-wrapper
+   sit side-by-side. Matches freelancer-dashboard.css line 34-41.
+   ───────────────────────────────────────── */
+body {
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────
+   PAGE WRAPPER
+   Push the entire right column past the fixed
+   260-px sidebar. This is the crucial fix —
+   layout.css's .page-wrapper has no margin-left.
+   Matches freelancer-dashboard.css lines 217-224.
+   ───────────────────────────────────────── */
+.page-wrapper {
+  margin-left: var(--sidebar-width, 260px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;       /* prevent flex overflow */
+}
+
+/* ─────────────────────────────────────────
+   TOPBAR — collaboration pages version
+   Matches the freelancer-dashboard.css topbar
+   (lines 226-255) so it looks identical.
+   ───────────────────────────────────────── */
+.topbar {
+  height: var(--topbar-height, 64px);
+  position: sticky;
+  top: 0;
+  background: rgba(15, 14, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+  z-index: 50;   /* below sidebar z-index (100) */
+}
+
+.topbar-title {
+  font-family: var(--font-display, "Sora", sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex: 1;
+  letter-spacing: -0.01em;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Role badge (FREELANCER / CLIENT pill) */
+.role-badge {
+  background: rgba(91, 79, 233, 0.2);
+  border: 1px solid rgba(91, 79, 233, 0.4);
+  color: var(--primary-light, #7b72f0);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+/* ─────────────────────────────────────────
+   MAIN CONTENT AREA
+   Matches freelancer-dashboard.css .content
+   (lines 302-308): max-width cap at 1280px.
+   ───────────────────────────────────────── */
+.content {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+}
+
+/* ─────────────────────────────────────────
+   PAGE CONTENT AREA
+   Extra top padding below the topbar.
+   ───────────────────────────────────────── */
+.collab-content {
+  padding: 32px 32px 64px;
+}
+
+/* ─────────────────────────────────────────
+   COLLAB CARD
+   A variant of .card used on the shared pages.
+   Has its own header / body structure so it
+   doesn't collide with existing card patterns.
+   ───────────────────────────────────────── */
+.collab-card {
+  background: var(--gradient-card);
+  border-radius: var(--radius-md);
+  border: var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.collab-card-elevated {
+  background: linear-gradient(135deg, #232236 0%, #1a1928 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+
+.collab-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: var(--border-subtle);
+}
+
+.collab-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+}
+
+.collab-card-title h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.collab-card-body {
+  padding: 20px;
+}
+
+/* ─────────────────────────────────────────
+   COLLAB INLINE DOT (badge indicator)
+   ───────────────────────────────────────── */
+.collab-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* ─────────────────────────────────────────
+   THREAD LIST ITEM
+   Used in Messages and Contracts pages.
+   ───────────────────────────────────────── */
+.collab-thread {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+}
+
+.collab-thread:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.collab-thread[data-active="true"] {
+  background: rgba(91, 79, 233, 0.12);
+  border-color: rgba(91, 79, 233, 0.3);
+}
+
+.collab-thread-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.collab-thread-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collab-thread-preview {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collab-thread-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   CHAT LAYOUT
+   Two-panel flex layout for Messages page.
+   ───────────────────────────────────────── */
+.collab-chat-layout {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - var(--topbar-height) - 96px);
+}
+
+.collab-thread-list {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.collab-thread-list .collab-card-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.collab-chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────
+   CHAT MESSAGES
+   Scrollable message area.
+   ───────────────────────────────────────── */
+.collab-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+
+/* Individual message rows */
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.msg-row--me {
+  flex-direction: row-reverse;
+}
+
+/* Avatar in chat */
+.msg-row .collab-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Bubble */
+.msg-bubble {
+  max-width: 480px;
+  background: var(--bg-elevated);
+  border-radius: 14px 14px 14px 4px;
+  padding: 10px 14px;
+  border: var(--border-subtle);
+}
+
+.msg-row--me .msg-bubble {
+  background: rgba(91, 79, 233, 0.2);
+  border-color: rgba(91, 79, 233, 0.3);
+  border-radius: 14px 14px 4px 14px;
+}
+
+.msg-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.msg-time {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────
+   CHAT COMPOSE BAR
+   ───────────────────────────────────────── */
+.collab-chat-compose {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 20px;
+  border-top: var(--border-subtle);
+  background: rgba(15, 14, 23, 0.5);
+}
+
+.collab-chat-compose .input-field {
+  flex: 1;
+}
+
+/* ─────────────────────────────────────────
+   KPI ROW
+   Horizontal stat cards for Wallet & Contracts.
+   ───────────────────────────────────────── */
+.collab-kpi-row {
+  display: flex;
+  gap: 16px;
+}
+
+.collab-kpi-row--top {
+  margin-bottom: 28px;
+}
+
+.collab-kpi {
+  flex: 1;
+  min-width: 0;
+}
+
+.collab-kpi--card {
+  background: rgba(35, 34, 54, 0.35);
+  border: var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+
+.collab-kpi--earnings {
+  background: var(--gradient-earnings);
+}
+
+.collab-kpi-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.collab-kpi-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.collab-kpi-sub {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────
+   MILESTONE TIMELINE
+   Used on the Contracts page.
+   ───────────────────────────────────────── */
+.collab-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.collab-timeline-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+/* Connector line between items */
+.collab-timeline-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Timeline dot */
+.collab-timeline-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.collab-dot--success {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: var(--success);
+}
+
+.collab-dot--warning {
+  background: rgba(234, 179, 8, 0.2);
+  border-color: var(--warning);
+}
+
+.collab-dot--neutral {
+  background: rgba(169, 167, 200, 0.15);
+  border-color: var(--text-muted);
+}
+
+/* Timeline content card */
+.collab-timeline-content {
+  flex: 1;
+  background: transparent;
+  border: var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.collab-milestone-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.collab-milestone-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.collab-milestone-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.collab-milestone-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────
+   DIVIDER
+   ───────────────────────────────────────── */
+.collab-divider {
+  border: none;
+  border-top: var(--border-subtle);
+  margin: 16px 0;
+}
+
+/* ─────────────────────────────────────────
+   FORM GRID
+   2-column form inside cards (disputes, contracts modal).
+   ───────────────────────────────────────── */
+.collab-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.collab-span-2 {
+  grid-column: span 2;
+}
+
+/* ─────────────────────────────────────────
+   TAB BAR OVERRIDE
+   Make tab-item style match collab card context.
+   ───────────────────────────────────────── */
+.collab-tabs {
+  margin-bottom: 0;
+  gap: 4px;
+}
+
+.collab-tabs .tab-item {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: var(--radius-pill);
+  border-bottom: none;
+}
+
+.collab-tabs .tab-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.collab-tabs .tab-item.active,
+.collab-tabs .tab-item[aria-selected="true"] {
+  background: rgba(91, 79, 233, 0.18);
+  color: var(--primary-light);
+  border-bottom: none;
+}
+
+/* ─────────────────────────────────────────
+   HUB CARDS — collaboration.html overview
+   ───────────────────────────────────────── */
+.collab-hub-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--gradient-card);
+  border-radius: var(--radius-md);
+  border: var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.collab-hub-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(91, 79, 233, 0.4);
+}
+
+.collab-hub-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(91, 79, 233, 0.15);
+  border: 1px solid rgba(91, 79, 233, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-light);
+  margin-bottom: 4px;
+}
+
+.collab-hub-icon--danger {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: var(--danger);
+}
+
+.collab-hub-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.collab-hub-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.collab-hub-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.collab-hub-badge {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────
+   MODAL  (collaboration pages)
+   The project's base .modal class handles size/bg.
+   We just need to wire the backdrop activation.
+   ───────────────────────────────────────── */
+.modal-backdrop[aria-hidden="true"] {
+  display: none;
+}
+
+.modal-backdrop[aria-hidden="false"],
+.modal-backdrop.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .collab-chat-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .collab-thread-list {
+    width: 100%;
+  }
+
+  .collab-chat-panel {
+    min-height: 420px;
+  }
+
+  .collab-kpi-row {
+    flex-wrap: wrap;
+  }
+
+  .collab-kpi--card {
+    min-width: calc(50% - 8px);
+  }
+
+  .collab-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .collab-span-2 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .collab-content {
+    padding: 16px 16px 48px;
+  }
+
+  .collab-kpi--card {
+    min-width: 100%;
+  }
+}

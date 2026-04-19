@@ -1,0 +1,579 @@
+/* =============================================================
+   BROWSE.CSS — Search & Discovery Styles
+   Used for Browse Jobs (Freelancer) and Browse Talent (Client).
+   Aligned with Design details.md
+   ============================================================= */
+
+/* ─── LAYOUT ────────────────────────────────────────────────── */
+.browse-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  padding: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px); /* Subtract header height */
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .browse-layout {
+    grid-template-columns: 1fr;
+  }
+  .filter-sidebar {
+    display: none; /* In a real app, this would be a drawer/modal */
+  }
+}
+
+/* ─── FILTER SIDEBAR ────────────────────────────────────────── */
+.filter-sidebar {
+  background: var(--bg-surface);
+  border-radius: 12px; /* var(--radius-card) */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px;
+  height: fit-content;
+  position: sticky;
+  top: 96px; /* 64px header + 32px gap */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); /* var(--shadow-card) */
+}
+
+.panel-head {
+  margin-bottom: 24px;
+}
+.panel-head h2 {
+  font-family: "Sora", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.panel-head p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.filter-block {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.filter-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.label-caps {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* Toggle Group (Budget Type) */
+.toggle-group {
+  display: flex;
+  background: var(--bg-elevated);
+  padding: 4px;
+  border-radius: 8px;
+  gap: 2px;
+}
+.toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.toggle-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
+/* Chip Group (Experience Level) */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  background: var(--bg-elevated);
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+.chip.active {
+  background: rgba(91, 79, 233, 0.15);
+  border-color: rgba(91, 79, 233, 0.3);
+  color: var(--primary-light);
+}
+
+/* Checkbox Group (Category) */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.checkbox-group label:hover {
+  color: var(--text-primary);
+}
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Range Slider */
+.range-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  background: transparent;
+  margin: 10px 0;
+}
+.range-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    var(--bg-elevated) 0%
+  ); /* JS will update gradient stop */
+  border-radius: 2px;
+}
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  margin-top: -6px; /* center thumb */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.range-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: "JetBrains Mono", monospace;
+  margin-top: 8px;
+}
+
+/* ─── CONTENT AREA ──────────────────────────────────────────── */
+.results-head {
+  margin-bottom: 32px;
+}
+.results-head h1 {
+  font-family: "Sora", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.results-head p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px; /* Design doc says 8px inputs */
+  padding: 6px 6px 6px 16px;
+  margin-bottom: 24px;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+.search-bar:focus-within {
+  border-color: rgba(91, 79, 233, 0.5);
+  box-shadow: 0 0 0 4px rgba(91, 79, 233, 0.1);
+}
+.search-bar i {
+  color: var(--text-muted);
+  width: 20px;
+  height: 20px;
+}
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 15px;
+  padding: 10px 16px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+.search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.divider-vertical {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 12px;
+}
+
+.search-dropdown {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.result-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.result-count span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ─── JOB GRID ──────────────────────────────────────────────── */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(340px, 1fr)
+  ); /* Responsive 2-col on desktop */
+  gap: 24px;
+}
+
+.job-card {
+  background: var(--bg-surface);
+  border-radius: 12px; /* var(--radius-card) */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+}
+.job-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(91, 79, 233, 0.05) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.job-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(91, 79, 233, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+.job-card:hover::before {
+  opacity: 1;
+}
+
+/* Card Top */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.job-logo {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.job-logo i {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 8px;
+  border-radius: 50%;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent); /* Heart/Save usually accent */
+}
+
+/* Card Content */
+.job-meta-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  margin-top: -4px;
+}
+
+.card-title {
+  font-family: "Sora", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.job-bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.budget-badge {
+  color: var(--accent); /* Orange accent for budget */
+  font-weight: 600;
+  font-size: 14px;
+  background: rgba(249, 115, 22, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.posted-at {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Badges */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-default {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+}
+.badge-mid {
+  background: rgba(91, 79, 233, 0.15);
+  color: var(--primary-light);
+}
+.badge-expert {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--warning);
+}
+.category-tag {
+  font-size: 12px;
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+/* ─── TALENT GRID (Browse Talent) ───────────────────────────── */
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.talent-card {
+  background: var(--bg-surface);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.talent-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(91, 79, 233, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.talent-avatar-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.talent-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.talent-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--success);
+  border: 2px solid var(--bg-surface);
+  border-radius: 50%;
+}
+
+.talent-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.talent-headline {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.4;
+  height: 36px; /* 2 lines roughly */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.talent-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.talent-skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-grow: 1; /* Push footer down */
+}
+
+.talent-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 16px;
+  margin-top: 16px; 
+}
+
+.hourly-rate {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 16px;
+}

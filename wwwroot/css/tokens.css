@@ -1,0 +1,71 @@
+:root {
+  /* Color Palette */
+  --primary: #5B4FE9;
+  --primary-light: #7B72F0;
+  --accent: #F97316;
+
+  --bg-base: #0F0E17;
+  --bg-surface: #1A1928;
+  --bg-elevated: #232236;
+
+  --text-primary: #F5F4FF;
+  --text-muted: #8B8AA8;
+
+  --success: #22C55E;
+  --warning: #EAB308;
+  --danger: #EF4444;
+
+  /* Gradient Definitions */
+  --grad-hero: linear-gradient(135deg, #5B4FE9 0%, #A78BFA 50%, #F97316 100%);
+  --grad-card-shimmer: linear-gradient(135deg, #1A1928 0%, #232236 100%);
+  --grad-cta: linear-gradient(90deg, #5B4FE9, #7B72F0);
+  --grad-earnings: linear-gradient(135deg, #22C55E20, #22C55E05);
+
+  /* Typography */
+  --font-display: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --font-hero: 700;
+  --font-h1: 600;
+  --font-body-weight: 400;
+  --font-label: 600;
+
+  /* Spacing & Shape */
+  --radius-card: 12px;
+  --radius-input: 8px;
+  --radius-pill: 999px;
+  --radius-modal: 16px;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Elevation */
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --divider: 1px solid rgba(255,255,255,0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+

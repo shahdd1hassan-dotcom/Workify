@@ -1,0 +1,335 @@
+/* =============================================================
+   ONBOARDING.CSS — Role Selection & Profile Setup
+   ============================================================= */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── HEADER ────────────────────────────────────────────────── */
+.onboarding-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(15, 14, 23, 0.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.user-snippet {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── MAIN LAYOUT ───────────────────────────────────────────── */
+.onboarding-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient Background Blobs */
+.blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: -1;
+}
+.blob-1 {
+  top: -200px;
+  left: -100px;
+  background: var(--primary);
+}
+.blob-2 {
+  bottom: -200px;
+  right: -100px;
+  background: var(--accent);
+}
+
+/* ─── CONTAINER ─────────────────────────────────────────────── */
+.onboarding-container {
+  width: 100%;
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.step-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.step-eyebrow {
+  color: var(--primary-light);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.step-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.step-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ─── ROLE SELECTION ────────────────────────────────────────── */
+.role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.role-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.role-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-4px);
+  border-color: var(--primary-light);
+}
+
+.role-card.selected {
+  background: rgba(91, 79, 233, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.role-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.role-card.selected .role-icon {
+  background: var(--primary);
+  color: white;
+}
+
+.role-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.role-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── FORMS & PROGRESS ──────────────────────────────────────── */
+.progress-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.progress-dot {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.progress-dot.active {
+  background: var(--primary);
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(91, 79, 233, 0.05);
+}
+
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.btn-back {
+  background: transparent;
+  padding: 12px 24px;
+  color: var(--text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: color 0.2s;
+}
+.btn-back:hover {
+  color: var(--text-primary);
+}
+
+.btn-next {
+  background: var(--primary);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-next:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+/* ─── HIDDEN SECTIONS ───────────────────────────────────────── */
+.section-hidden {
+  display: none;
+}
+
+/* ─── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .step-card {
+    padding: 32px 20px;
+  }
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+  .step-title {
+    font-size: 2rem;
+  }
+}
