@@ -4457,11 +4457,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Study\\University\\smaster 6\\web development\\Workify\\Workify_Full\\Workify_Full.csproj",
+      "projectUniqueName": "D:\\Study\\University\\smaster 6\\web development\\projects\\Workify backend\\Workify_Full\\Workify_Full.csproj",
       "projectName": "Workify_Full",
-      "projectPath": "D:\\Study\\University\\smaster 6\\web development\\Workify\\Workify_Full\\Workify_Full.csproj",
+      "projectPath": "D:\\Study\\University\\smaster 6\\web development\\projects\\Workify backend\\Workify_Full\\Workify_Full.csproj",
       "packagesPath": "C:\\Users\\shahd\\.nuget\\packages\\",
-      "outputPath": "D:\\Study\\University\\smaster 6\\web development\\Workify\\Workify_Full\\obj\\",
+      "outputPath": "D:\\Study\\University\\smaster 6\\web development\\projects\\Workify backend\\Workify_Full\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4480,6 +4480,7 @@
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {}
         }
@@ -4498,6 +4499,7 @@
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
@@ -4550,7 +4552,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

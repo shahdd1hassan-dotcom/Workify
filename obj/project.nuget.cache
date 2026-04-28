@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l7LnFOkWSGg=",
+  "dgSpecHash": "mD8FGEu2YR4=",
   "success": true,
-  "projectFilePath": "D:\\Study\\University\\smaster 6\\web development\\Workify\\Workify_Full\\Workify_Full.csproj",
+  "projectFilePath": "D:\\Study\\University\\smaster 6\\web development\\projects\\Workify backend\\Workify_Full\\Workify_Full.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shahd\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\shahd\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

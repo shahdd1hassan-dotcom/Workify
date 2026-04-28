@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workify_Full.Data;
 
@@ -11,9 +12,11 @@ using Workify_Full.Data;
 namespace Workify_Full.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260421141532_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -837,7 +840,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "FiledBy")
                         .WithMany()
                         .HasForeignKey("FiledById")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Workify_Full.Models.Milestone", "Milestone")
@@ -862,7 +865,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Dispute");
@@ -875,7 +878,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "Client")
                         .WithMany("PostedJobs")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");
@@ -896,7 +899,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Conversation");
@@ -920,7 +923,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "Freelancer")
                         .WithMany("Proposals")
                         .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Workify_Full.Models.Job", "Job")
@@ -970,7 +973,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.Wallet", "Wallet")
                         .WithMany("Transactions")
                         .HasForeignKey("WalletId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Milestone");
@@ -983,7 +986,7 @@ namespace Workify_Full.Data.Migrations
                     b.HasOne("Workify_Full.Models.ApplicationUser", "User")
                         .WithOne("Wallet")
                         .HasForeignKey("Workify_Full.Models.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
