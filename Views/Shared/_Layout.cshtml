@@ -3,45 +3,165 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Workify_Full</title>
+    <meta name="description" content="Workify — The freelance marketplace with escrow-backed payments, smart contracts, and real-time collaboration." />
+    <title>@ViewData["Title"] - Workify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Workify_Full.styles.css" asp-append-version="true" />
+    <style>
+        :root {
+            --brand-primary: #5B4FE9;
+            --brand-secondary: #F97316;
+            --brand-dark: #0F0E17;
+            --brand-surface: #1A1929;
+            --brand-border: rgba(255,255,255,0.08);
+            --text-muted: rgba(255,255,255,0.5);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--brand-dark);
+            color: #e8e6ff;
+            margin: 0;
+        }
+
+        /* ── Navbar ── */
+        .wf-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15,14,23,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--brand-border);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        .wf-brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7C6FF5, #F97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .wf-nav-links { display: flex; align-items: center; gap: 0.5rem; }
+        .wf-nav-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .wf-nav-link:hover { color: #fff; background: rgba(91,79,233,0.15); }
+        .wf-btn-primary {
+            background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
+            color: #fff !important;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.45rem 1.1rem;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.15s;
+            display: inline-block;
+        }
+        .wf-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .wf-btn-ghost {
+            background: transparent;
+            color: rgba(255,255,255,0.8) !important;
+            border: 1px solid var(--brand-border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.45rem 1.1rem;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+            display: inline-block;
+        }
+        .wf-btn-ghost:hover { border-color: #5B4FE9; background: rgba(91,79,233,0.1); }
+
+        /* ── Avatar badge ── */
+        .wf-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5B4FE9, #F97316);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: #fff;
+            text-decoration: none;
+        }
+
+        /* ── Main Content ── */
+        .wf-main { min-height: calc(100vh - 60px - 56px); }
+
+        /* ── Footer ── */
+        .wf-footer {
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid var(--brand-border);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+        .wf-footer a { color: #7C6FF5; text-decoration: none; }
+
+        /* ── Alert messages ── */
+        .wf-alert-success {
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: #4ade80;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Workify_Full</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+    <nav class="wf-nav">
+        <a href="/" class="wf-brand">Workify</a>
+        <div class="wf-nav-links">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <a class="wf-nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="wf-nav-link" asp-controller="Account" asp-action="Profile">Profile</a>
+                <a href="#" class="wf-avatar" title="My Profile">
+                    @(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "U")
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="wf-btn-ghost ms-1">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a class="wf-nav-link" asp-controller="Account" asp-action="Login">Log In</a>
+                <a class="wf-btn-primary" asp-controller="Account" asp-action="Register">Get Started</a>
+            }
+        </div>
+    </nav>
+
+    <div class="wf-main">
+        @if (TempData["Success"] != null)
+        {
+            <div class="container pt-3">
+                <div class="wf-alert-success">✓ @TempData["Success"]</div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        }
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Workify_Full - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer class="wf-footer">
+        &copy; 2026 Workify &mdash; <a asp-controller="Home" asp-action="Privacy">Privacy</a>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

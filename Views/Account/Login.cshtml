@@ -1,0 +1,171 @@
+﻿@model Workify_Full.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Log In";
+    Layout = "_Layout";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<style>
+    .auth-shell {
+        min-height: calc(100vh - 116px);
+        display: flex;
+    }
+    .auth-art {
+        flex: 0 0 42%;
+        background: linear-gradient(150deg, #1a1640 0%, #0f0e17 60%, #1a0f2e 100%);
+        padding: 4rem 3.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .auth-art::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 20% 40%, rgba(91,79,233,0.25) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 80%, rgba(249,115,22,0.15) 0%, transparent 60%);
+        pointer-events: none;
+    }
+    .art-logo { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 2.5rem; }
+    .art-logo span { background: linear-gradient(135deg,#7C6FF5,#F97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .art-heading { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 1rem; }
+    .art-subtext { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.6; }
+    .art-testimonial {
+        margin-top: 3rem;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px;
+        padding: 1.25rem 1.5rem;
+        font-size: 0.92rem;
+        color: rgba(255,255,255,0.7);
+        line-height: 1.6;
+    }
+    .art-testimonial cite { display: block; margin-top: 0.5rem; font-style: normal; font-weight: 600; color: #7C6FF5; }
+
+    .auth-form-panel {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        background: #0f0e17;
+    }
+    .auth-box { width: 100%; max-width: 440px; }
+    .auth-eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7C6FF5; margin-bottom: 0.4rem; }
+    .auth-heading { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    .auth-lead { color: rgba(255,255,255,0.5); font-size: 0.95rem; margin-bottom: 2rem; }
+
+    .auth-tabs { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 0.25rem; margin-bottom: 1.75rem; }
+    .auth-tab {
+        flex: 1; text-align: center; padding: 0.55rem; border-radius: 8px;
+        font-weight: 600; font-size: 0.9rem; color: rgba(255,255,255,0.5);
+        text-decoration: none; transition: all 0.2s;
+    }
+    .auth-tab.active { background: linear-gradient(135deg, #5B4FE9, #7C6FF5); color: #fff; }
+    .auth-tab:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.07); }
+
+    .form-field { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; }
+    .form-input {
+        width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px; color: #fff; padding: 0.7rem 1rem; font-size: 0.95rem;
+        transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    .form-input:focus { border-color: #5B4FE9; box-shadow: 0 0 0 3px rgba(91,79,233,0.2); }
+    .form-input.input-validation-error { border-color: #f87171; }
+
+    .remember-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .remember-row input[type=checkbox] { accent-color: #5B4FE9; width: 16px; height: 16px; }
+    .remember-row label { font-size: 0.88rem; color: rgba(255,255,255,0.6); cursor: pointer; }
+
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
+        color: #fff; border: none; border-radius: 10px;
+        padding: 0.8rem; font-size: 1rem; font-weight: 700;
+        cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .field-validation-error { color: #f87171; font-size: 0.8rem; display: block; margin-top: 0.25rem; }
+    .validation-summary-errors ul { list-style: none; padding: 0; margin: 0; }
+    .validation-summary-errors {
+        background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3);
+        border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem;
+        color: #f87171; font-size: 0.88rem;
+    }
+
+    .auth-switch { text-align: center; margin-top: 1.25rem; font-size: 0.9rem; color: rgba(255,255,255,0.5); }
+    .auth-switch a { color: #7C6FF5; font-weight: 600; text-decoration: none; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    @@media (max-width: 768px) {
+        .auth-shell { flex-direction: column; }
+        .auth-art { flex: none; padding: 2.5rem 2rem; }
+    }
+
+    .login-form input.input-validation-error,
+    .login-form input.is-invalid {
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+</style>
+
+<div class="auth-shell">
+    <aside class="auth-art">
+        <div class="art-logo">Work<span>ify</span></div>
+        <h1 class="auth-heading">Welcome back.</h1>
+        <p class="art-subtext">Log in to manage your projects, contracts, and wallet—all in one place.</p>
+        <div class="art-testimonial">
+            "Milestone tracking removed all payment friction. I can focus on delivery because expectations are crystal clear."
+            <cite>Fady Hassan — Senior Frontend Engineer</cite>
+        </div>
+    </aside>
+
+    <main class="auth-form-panel">
+        <div class="auth-box">
+            <p class="auth-eyebrow">Authentication</p>
+            <h2 class="auth-heading">Log In</h2>
+            <p class="auth-lead">Enter your credentials to continue.</p>
+
+            <div class="auth-tabs">
+                <a class="auth-tab active" href="#">Log In</a>
+                <a class="auth-tab" asp-controller="Account" asp-action="Register">Register</a>
+            </div>
+
+            <div asp-validation-summary="All" class="validation-summary-errors"></div>
+
+            <form asp-action="Login" asp-route-returnUrl="@returnUrl" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-field">
+                    <label class="form-label" asp-for="Email">Email</label>
+                    <input class="form-input" asp-for="Email" type="email" placeholder="you@example.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" asp-for="Password">Password</label>
+                    <input class="form-input" asp-for="Password" type="password" placeholder="Your password" autocomplete="current-password" />
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="remember-row">
+                    <input asp-for="RememberMe" type="checkbox" id="rememberMe" />
+                    <label for="rememberMe">Remember me for 30 days</label>
+                </div>
+
+                <button type="submit" class="btn-submit">Continue →</button>
+            </form>
+
+            <p class="auth-switch">Don't have an account? <a asp-action="Register">Create one</a></p>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
