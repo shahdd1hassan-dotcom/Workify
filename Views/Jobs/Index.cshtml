@@ -1,0 +1,179 @@
+@model Workify_Full.ViewModels.JobIndexViewModel
+@{
+    ViewData["Title"] = "Browse Jobs";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/jobs.css" asp-append-version="true" />
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="jb-page-header">
+        <div>
+            <h1>Browse Jobs</h1>
+            <p>Explore opportunities tailored to your skills.</p>
+        </div>
+        @if (Model.IsClient)
+        {
+            <a asp-action="Create" class="wf-btn-primary" style="padding:0.6rem 1.4rem;">
+                ✦ Post a Job
+            </a>
+        }
+    </div>
+
+    <!-- Browse Layout (sidebar + grid) -->
+    <div class="jb-browse">
+        <!-- ═══ FILTER SIDEBAR ═══ -->
+        <aside class="jb-filter-sidebar">
+            <h3>Filters</h3>
+            <p class="filter-sub">Refine your search results</p>
+
+            <form method="get" asp-action="Index" id="filterForm">
+                <!-- Category -->
+                <div class="jb-filter-block">
+                    <p class="jb-filter-label">Category</p>
+                    <select name="category" class="jb-filter-select">
+                        <option value="">All Categories</option>
+                        <option value="Web Development" selected="@(Model.Category == "Web Development" ? "selected" : null)">Web Development</option>
+                        <option value="Mobile Development" selected="@(Model.Category == "Mobile Development" ? "selected" : null)">Mobile Development</option>
+                        <option value="UI / UX Design" selected="@(Model.Category == "UI / UX Design" ? "selected" : null)">UI / UX Design</option>
+                        <option value="Graphic Design" selected="@(Model.Category == "Graphic Design" ? "selected" : null)">Graphic Design</option>
+                        <option value="Writing & Content" selected="@(Model.Category == "Writing & Content" ? "selected" : null)">Writing &amp; Content</option>
+                        <option value="Marketing & SEO" selected="@(Model.Category == "Marketing & SEO" ? "selected" : null)">Marketing &amp; SEO</option>
+                        <option value="Data Science & Analytics" selected="@(Model.Category == "Data Science & Analytics" ? "selected" : null)">Data Science &amp; Analytics</option>
+                        <option value="Video & Animation" selected="@(Model.Category == "Video & Animation" ? "selected" : null)">Video &amp; Animation</option>
+                        <option value="Finance & Accounting" selected="@(Model.Category == "Finance & Accounting" ? "selected" : null)">Finance &amp; Accounting</option>
+                        <option value="Customer Support" selected="@(Model.Category == "Customer Support" ? "selected" : null)">Customer Support</option>
+                    </select>
+                </div>
+
+                <!-- Experience Level -->
+                <div class="jb-filter-block">
+                    <p class="jb-filter-label">Experience Level</p>
+                    <select name="experienceLevel" class="jb-filter-select">
+                        <option value="">All Levels</option>
+                        <option value="Entry" selected="@(Model.ExperienceLevel == "Entry" ? "selected" : null)">Entry Level</option>
+                        <option value="Intermediate" selected="@(Model.ExperienceLevel == "Intermediate" ? "selected" : null)">Intermediate</option>
+                        <option value="Expert" selected="@(Model.ExperienceLevel == "Expert" ? "selected" : null)">Expert</option>
+                    </select>
+                </div>
+
+                <!-- Budget Type -->
+                <div class="jb-filter-block">
+                    <p class="jb-filter-label">Budget Type</p>
+                    <select name="budgetType" class="jb-filter-select">
+                        <option value="">All Types</option>
+                        <option value="Fixed" selected="@(Model.BudgetType == "Fixed" ? "selected" : null)">Fixed Price</option>
+                        <option value="Hourly" selected="@(Model.BudgetType == "Hourly" ? "selected" : null)">Hourly Rate</option>
+                    </select>
+                </div>
+
+                <!-- Budget Max -->
+                <div class="jb-filter-block">
+                    <p class="jb-filter-label">Max Budget</p>
+                    <input type="number" name="budgetMax" class="jb-filter-input"
+                           placeholder="e.g. 5000" min="0"
+                           value="@(Model.BudgetMax?.ToString() ?? "")" />
+                </div>
+
+                <!-- Search -->
+                <input type="hidden" name="searchQuery" value="@Model.SearchQuery" />
+
+                <button type="submit" class="jb-filter-btn">Apply Filters</button>
+                <a asp-action="Index" class="jb-filter-clear">Clear All</a>
+            </form>
+        </aside>
+
+        <!-- ═══ MAIN CONTENT ═══ -->
+        <main>
+            <!-- Search bar -->
+            <div class="jb-search-bar">
+                <span>🔍</span>
+                <input type="text" placeholder="Search for jobs, skills, or keywords..."
+                       value="@Model.SearchQuery" id="jbSearchInput" />
+            </div>
+
+            <p class="jb-result-count">
+                <strong>@Model.TotalCount</strong> jobs found
+            </p>
+
+            <!-- Job grid -->
+            <div class="jb-grid">
+                @if (Model.Jobs.Any())
+                {
+                    @foreach (var job in Model.Jobs)
+                    {
+                        <partial name="_JobCard" model="job" />
+                    }
+                }
+                else
+                {
+                    <div class="jb-empty">
+                        <h3>No jobs found</h3>
+                        <p>Try adjusting your filters or search terms.</p>
+                        <a asp-action="Index" class="wf-btn-primary" style="display:inline-block;">Browse All Jobs</a>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="jb-pagination">
+                    @if (Model.Page > 1)
+                    {
+                        <a asp-action="Index"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-searchQuery="@Model.SearchQuery"
+                           asp-route-category="@Model.Category"
+                           asp-route-experienceLevel="@Model.ExperienceLevel"
+                           asp-route-budgetType="@Model.BudgetType"
+                           asp-route-budgetMax="@Model.BudgetMax"
+                           class="jb-page-link">← Prev</a>
+                    }
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <a asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-searchQuery="@Model.SearchQuery"
+                           asp-route-category="@Model.Category"
+                           asp-route-experienceLevel="@Model.ExperienceLevel"
+                           asp-route-budgetType="@Model.BudgetType"
+                           asp-route-budgetMax="@Model.BudgetMax"
+                           class="jb-page-link @(i == Model.Page ? "active" : "")">@i</a>
+                    }
+
+                    @if (Model.Page < Model.TotalPages)
+                    {
+                        <a asp-action="Index"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-searchQuery="@Model.SearchQuery"
+                           asp-route-category="@Model.Category"
+                           asp-route-experienceLevel="@Model.ExperienceLevel"
+                           asp-route-budgetType="@Model.BudgetType"
+                           asp-route-budgetMax="@Model.BudgetMax"
+                           class="jb-page-link">Next →</a>
+                    }
+                </div>
+            }
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Live search: update hidden field and submit on Enter
+        const searchInput = document.getElementById('jbSearchInput');
+        const filterForm = document.getElementById('filterForm');
+        if (searchInput && filterForm) {
+            searchInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    filterForm.querySelector('input[name="searchQuery"]').value = this.value;
+                    filterForm.submit();
+                }
+            });
+        }
+    </script>
+}

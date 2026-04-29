@@ -1,0 +1,153 @@
+@model Workify_Full.ViewModels.EditProfileViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/variables.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/jobs.css" asp-append-version="true" />
+
+<style>
+    .ep-page { max-width: 640px; margin: 0 auto; padding: 2rem 1rem 3rem; animation: jbFadeUp 0.4s ease both; }
+    .ep-header { text-align: center; margin-bottom: 2rem; }
+    .ep-header h1 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.3rem; }
+    .ep-header p { color: rgba(255,255,255,0.5); font-size: 0.92rem; }
+
+    .ep-card {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px; padding: 2rem;
+    }
+    .ep-section { margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .ep-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .ep-section-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+    .ep-section-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-bottom: 1.25rem; }
+
+    .ep-field { margin-bottom: 1.1rem; }
+    .ep-label { display: block; font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; }
+    .ep-input, .ep-textarea {
+        width: 100%; padding: 0.65rem 0.9rem;
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px; color: #fff; font-size: 0.92rem;
+        font-family: 'Inter', sans-serif; outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .ep-input:focus, .ep-textarea:focus {
+        border-color: #5B4FE9; box-shadow: 0 0 0 3px rgba(91,79,233,0.2);
+    }
+    .ep-textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+    .ep-hint { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 0.3rem; line-height: 1.4; }
+    .ep-input.input-validation-error, .ep-textarea.input-validation-error { border-color: #f87171; }
+
+    .ep-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    .ep-submit {
+        width: 100%; padding: 0.8rem; margin-top: 0.5rem;
+        background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
+        color: #fff; border: none; border-radius: 10px;
+        font-size: 1rem; font-weight: 700; cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s;
+    }
+    .ep-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .ep-cancel {
+        display: block; width: 100%; text-align: center; margin-top: 0.75rem;
+        color: rgba(255,255,255,0.4); font-size: 0.9rem; text-decoration: none;
+        transition: color 0.2s;
+    }
+    .ep-cancel:hover { color: #fff; }
+
+    .field-validation-error { color: #f87171; font-size: 0.8rem; display: block; margin-top: 0.25rem; }
+    .validation-summary-errors {
+        background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3);
+        border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem;
+        color: #f87171; font-size: 0.88rem;
+    }
+    .validation-summary-errors ul { list-style: none; padding: 0; margin: 0; }
+
+    @@media (max-width: 640px) { .ep-row { grid-template-columns: 1fr; } }
+</style>
+
+<div class="ep-page">
+    <div class="ep-header">
+        <h1>Edit Your Profile</h1>
+        <p>Update your information visible to clients and freelancers.</p>
+    </div>
+
+    <div class="ep-card">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+        {
+            <div asp-validation-summary="All" class="validation-summary-errors"></div>
+        }
+
+        <form asp-action="EditProfile" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Section 1: Basic Info -->
+            <div class="ep-section">
+                <div class="ep-section-title">Basic Information</div>
+                <div class="ep-section-sub">Your name and location.</div>
+
+                <div class="ep-row">
+                    <div class="ep-field">
+                        <label class="ep-label" asp-for="FullName">Full Name</label>
+                        <input asp-for="FullName" class="ep-input" placeholder="Alex Kim" />
+                        <span asp-validation-for="FullName" class="field-validation-error"></span>
+                    </div>
+                    <div class="ep-field">
+                        <label class="ep-label" asp-for="Country">Country</label>
+                        <input asp-for="Country" class="ep-input" placeholder="e.g. Egypt" />
+                        <span asp-validation-for="Country" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="ep-field">
+                    <label class="ep-label" asp-for="AvatarUrl">Avatar URL</label>
+                    <input asp-for="AvatarUrl" class="ep-input" placeholder="https://example.com/photo.jpg" />
+                    <span asp-validation-for="AvatarUrl" class="field-validation-error"></span>
+                    <div class="ep-hint">Paste a link to your profile picture. Leave blank to use initials.</div>
+                </div>
+            </div>
+
+            <!-- Section 2: Bio & Skills -->
+            <div class="ep-section">
+                <div class="ep-section-title">About You</div>
+                <div class="ep-section-sub">Tell people about your experience and expertise.</div>
+
+                <div class="ep-field">
+                    <label class="ep-label" asp-for="Bio">Bio</label>
+                    <textarea asp-for="Bio" class="ep-textarea"
+                              placeholder="I'm a full-stack developer with 5 years of experience..."></textarea>
+                    <span asp-validation-for="Bio" class="field-validation-error"></span>
+                </div>
+
+                <div class="ep-field">
+                    <label class="ep-label" asp-for="Skills">Skills</label>
+                    <input asp-for="Skills" class="ep-input" placeholder="React, Node.js, Figma, TypeScript" />
+                    <span asp-validation-for="Skills" class="field-validation-error"></span>
+                    <div class="ep-hint">Comma-separated list of your top skills.</div>
+                </div>
+            </div>
+
+            <!-- Section 3: Rate -->
+            <div class="ep-section">
+                <div class="ep-section-title">Pricing</div>
+                <div class="ep-section-sub">Set your hourly rate (visible to clients).</div>
+
+                <div class="ep-field">
+                    <label class="ep-label" asp-for="HourlyRate">Hourly Rate (EGP)</label>
+                    <input asp-for="HourlyRate" class="ep-input" type="number" min="0" step="1"
+                           placeholder="e.g. 500" />
+                    <span asp-validation-for="HourlyRate" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="ep-submit">Save Changes</button>
+            <a asp-action="Profile" class="ep-cancel">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

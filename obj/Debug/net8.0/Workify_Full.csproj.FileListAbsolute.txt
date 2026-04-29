@@ -304,10 +304,10 @@ D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_F
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\staticwebassets.development.json
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\swae.build.ex.cache
-D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\Workify_.4B2CB8F5.Up2Date
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\Workify_Full.dll
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\refint\Workify_Full.dll
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\Workify_Full.pdb
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\Workify_Full.genruntimeconfig.cache
 D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\ref\Workify_Full.dll
+D:\Study\University\smaster 6\web development\projects\Workify backend\Workify_Full\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

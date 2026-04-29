@@ -1,0 +1,49 @@
+@model Workify_Full.Models.Job
+@{
+    // Determine experience badge class
+    var badgeClass = Model.ExperienceLevel switch
+    {
+        "Expert" => "jb-badge-expert",
+        "Intermediate" => "jb-badge-intermediate",
+        _ => "jb-badge-entry"
+    };
+    // Category icon mapping
+    var iconMap = new Dictionary<string, string>
+    {
+        {"Web Development", "💻"}, {"Mobile Development", "📱"}, {"UI / UX Design", "🎨"},
+        {"Graphic Design", "🖌️"}, {"Writing & Content", "✍️"}, {"Marketing & SEO", "📣"},
+        {"Data Science & Analytics", "📊"}, {"Video & Animation", "🎬"},
+        {"Finance & Accounting", "💰"}, {"Customer Support", "🎧"}
+    };
+    var icon = iconMap.ContainsKey(Model.Category) ? iconMap[Model.Category] : "📋";
+    // Time ago
+    var elapsed = DateTime.UtcNow - Model.CreatedAt;
+    var timeAgo = elapsed.TotalMinutes < 60 ? $"{(int)elapsed.TotalMinutes}m ago"
+        : elapsed.TotalHours < 24 ? $"{(int)elapsed.TotalHours}h ago"
+        : elapsed.TotalDays < 30 ? $"{(int)elapsed.TotalDays}d ago"
+        : Model.CreatedAt.ToString("MMM d");
+    // Budget display
+    var budgetText = Model.BudgetType == "Hourly"
+        ? $"${Model.BudgetMin:N0}–${Model.BudgetMax:N0}/hr"
+        : $"${Model.BudgetMin:N0}–${Model.BudgetMax:N0} Fixed";
+}
+
+<a asp-controller="Jobs" asp-action="Details" asp-route-id="@Model.JobId" class="jb-card">
+    <div class="jb-card-top">
+        <div class="jb-card-icon">@icon</div>
+        <span class="jb-status jb-status-@Model.Status.ToString().ToLower()">@Model.Status</span>
+    </div>
+    <div class="jb-card-meta">
+        <span class="jb-tag-category">@Model.Category</span>
+        <span class="jb-badge @badgeClass">@Model.ExperienceLevel</span>
+    </div>
+    <h3 class="jb-card-title">@Model.Title</h3>
+    <p class="jb-card-desc">@Model.Description</p>
+    <div class="jb-card-footer">
+        <span class="jb-budget">@budgetText</span>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="jb-proposals-count">@Model.Proposals.Count proposals</span>
+            <span class="jb-posted">@timeAgo</span>
+        </div>
+    </div>
+</a>

@@ -1,4 +1,4 @@
-﻿@model Workify_Full.ViewModels.ProfileViewModel
+@model Workify_Full.ViewModels.ProfileViewModel
 @{
     ViewData["Title"] = Model.User.FullName + " — Profile";
     Layout = "_Layout";
@@ -9,211 +9,208 @@
     var stars = Model.AverageRating;
 }
 
-<style>
-    .profile-page { padding: 2.5rem 1.5rem; max-width: 960px; margin: 0 auto; }
+<link rel="stylesheet" href="~/css/variables.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/jobs.css" asp-append-version="true" />
 
-    /* Hero card */
-    .profile-hero {
+<style>
+    /* ── Profile page styles (scoped, uses design tokens) ── */
+    .pf-page { padding: 2rem 1rem 3rem; max-width: 960px; margin: 0 auto; animation: jbFadeUp 0.4s ease both; }
+
+    .pf-hero {
         background: linear-gradient(135deg, rgba(91,79,233,0.12) 0%, rgba(249,115,22,0.07) 100%);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 20px;
-        padding: 2rem 2.5rem;
-        display: flex;
-        gap: 2rem;
-        align-items: flex-start;
-        margin-bottom: 2rem;
+        border: 1px solid rgba(255,255,255,0.08); border-radius: 20px;
+        padding: 2rem 2.5rem; display: flex; gap: 2rem; align-items: flex-start; margin-bottom: 1.5rem;
     }
-    .profile-avatar-wrap { flex-shrink: 0; }
-    .profile-avatar {
-        width: 96px; height: 96px; border-radius: 50%;
-        background: linear-gradient(135deg, #5B4FE9, #F97316);
+    .pf-avatar {
+        width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
+        background: linear-gradient(135deg, var(--primary, #5B4FE9), var(--accent, #F97316));
         display: flex; align-items: center; justify-content: center;
-        font-size: 2.2rem; font-weight: 800; color: #fff;
-        overflow: hidden;
+        font-size: 2.2rem; font-weight: 800; color: #fff; overflow: hidden;
     }
-    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-info { flex: 1; min-width: 0; }
-    .profile-name { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem; }
-    .profile-role-badge {
-        display: inline-block;
-        background: rgba(91,79,233,0.2);
-        border: 1px solid rgba(91,79,233,0.4);
-        color: #9d94f5;
-        border-radius: 20px; padding: 0.2rem 0.8rem;
+    .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .pf-info { flex: 1; min-width: 0; }
+    .pf-name { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem; }
+    .pf-role {
+        display: inline-block; background: rgba(91,79,233,0.2); border: 1px solid rgba(91,79,233,0.4);
+        color: #9d94f5; border-radius: 20px; padding: 0.2rem 0.8rem;
         font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em;
         text-transform: uppercase; margin-bottom: 0.75rem;
     }
-    .profile-bio { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; }
-    .profile-meta { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .meta-item { font-size: 0.88rem; color: rgba(255,255,255,0.5); }
-    .meta-item strong { color: rgba(255,255,255,0.85); }
+    .pf-bio { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.75rem; }
+    .pf-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
+    .pf-meta-item { font-size: 0.88rem; color: rgba(255,255,255,0.5); }
+    .pf-meta-item strong { color: rgba(255,255,255,0.85); }
 
-    .profile-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
-    .btn-edit {
-        background: rgba(91,79,233,0.15);
-        border: 1px solid rgba(91,79,233,0.4);
-        color: #9d94f5;
-        border-radius: 8px; padding: 0.5rem 1.2rem;
-        font-size: 0.88rem; font-weight: 600;
-        text-decoration: none; transition: background 0.2s;
-    }
-    .btn-edit:hover { background: rgba(91,79,233,0.3); color: #fff; }
-
-    /* Skills */
-    .skill-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
-    .skill-chip {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.1);
-        color: rgba(255,255,255,0.75);
-        border-radius: 20px; padding: 0.25rem 0.85rem;
+    .pf-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .pf-skill {
+        background: rgba(91,79,233,0.1); border: 1px solid rgba(91,79,233,0.2);
+        color: #7b72f0; border-radius: 20px; padding: 0.25rem 0.85rem;
         font-size: 0.82rem; font-weight: 500;
     }
 
-    /* Stat grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.07);
+    .pf-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
+    .pf-btn-edit {
+        background: rgba(91,79,233,0.15); border: 1px solid rgba(91,79,233,0.4);
+        color: #9d94f5; border-radius: 8px; padding: 0.5rem 1.2rem;
+        font-size: 0.88rem; font-weight: 600; text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+    }
+    .pf-btn-edit:hover { background: rgba(91,79,233,0.3); color: #fff; }
+
+    /* Stats grid */
+    .pf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .pf-stat {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
         border-radius: 14px; padding: 1.25rem 1.5rem; text-align: center;
     }
-    .stat-card .stat-value { font-size: 1.5rem; font-weight: 800; color: #fff; }
-    .stat-card .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.25rem; }
-    .stat-card.accent .stat-value { background: linear-gradient(135deg,#5B4FE9,#7C6FF5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    .stat-card.warn .stat-value { color: #F97316; }
+    .pf-stat-val { font-size: 1.5rem; font-weight: 800; color: #fff; }
+    .pf-stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.25rem; }
+    .pf-stat.accent .pf-stat-val { background: linear-gradient(135deg,#5B4FE9,#7C6FF5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .pf-stat.warn .pf-stat-val { color: #F97316; }
 
     /* Reviews */
-    .section-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
-    .reviews-list { display: flex; flex-direction: column; gap: 1rem; }
-    .review-card {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.07);
+    .pf-section-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .pf-reviews { display: flex; flex-direction: column; gap: 0.75rem; }
+    .pf-review {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
         border-radius: 14px; padding: 1.25rem 1.5rem;
     }
-    .review-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
-    .reviewer-avatar {
+    .pf-review-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .pf-review-av {
         width: 38px; height: 38px; border-radius: 50%;
         background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
         display: flex; align-items: center; justify-content: center;
         font-size: 0.9rem; font-weight: 700; color: #fff; flex-shrink: 0;
     }
-    .reviewer-name { font-weight: 600; color: rgba(255,255,255,0.9); font-size: 0.9rem; }
-    .review-date { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-left: auto; }
-    .star-row { display: flex; gap: 2px; margin-bottom: 0.5rem; }
-    .star { color: #fbbf24; font-size: 0.9rem; }
-    .star.empty { color: rgba(255,255,255,0.15); }
-    .review-text { color: rgba(255,255,255,0.6); font-size: 0.92rem; line-height: 1.55; }
-    .no-reviews { color: rgba(255,255,255,0.35); font-size: 0.95rem; text-align: center; padding: 2rem; }
+    .pf-review-name { font-weight: 600; color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+    .pf-review-date { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-left: auto; }
+    .pf-stars { display: flex; gap: 2px; }
+    .pf-star { color: #fbbf24; font-size: 0.9rem; }
+    .pf-star.empty { color: rgba(255,255,255,0.15); }
+    .pf-review-text { color: rgba(255,255,255,0.6); font-size: 0.92rem; line-height: 1.55; }
+    .pf-empty { color: rgba(255,255,255,0.35); font-size: 0.95rem; text-align: center; padding: 2rem; }
+
+    /* Alert */
+    .pf-alert-success {
+        background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+        color: #4ade80; border-radius: 10px; padding: 0.75rem 1rem;
+        margin-bottom: 1rem; font-size: 0.9rem;
+    }
 
     @@media (max-width: 640px) {
-        .profile-hero { flex-direction: column; gap: 1rem; }
-        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .pf-hero { flex-direction: column; gap: 1rem; }
+        .pf-stats { grid-template-columns: 1fr 1fr; }
     }
 </style>
 
-<div class="profile-page">
+<div class="pf-page">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="pf-alert-success">✓ @TempData["Success"]</div>
+    }
 
     <!-- Hero / identity card -->
-    <div class="profile-hero">
-        <div class="profile-avatar-wrap">
-            <div class="profile-avatar">
-                @if (!string.IsNullOrEmpty(Model.User.AvatarUrl))
-                {
-                    <img src="@Model.User.AvatarUrl" alt="@Model.User.FullName" />
-                }
-                else
-                {
-                    @initials
-                }
-            </div>
+    <div class="pf-hero">
+        <div class="pf-avatar">
+            @if (!string.IsNullOrEmpty(Model.User.AvatarUrl))
+            {
+                <img src="@Model.User.AvatarUrl" alt="@Model.User.FullName" />
+            }
+            else
+            {
+                @initials
+            }
         </div>
 
-        <div class="profile-info">
-            <div class="profile-name">@Model.User.FullName</div>
-            <span class="profile-role-badge">@roleLabel</span>
+        <div class="pf-info">
+            <div class="pf-name">@Model.User.FullName</div>
+            <span class="pf-role">@roleLabel</span>
 
             @if (!string.IsNullOrWhiteSpace(Model.User.Bio))
             {
-                <p class="profile-bio">@Model.User.Bio</p>
+                <p class="pf-bio">@Model.User.Bio</p>
             }
 
-            <div class="profile-meta">
+            <div class="pf-meta">
                 @if (!string.IsNullOrWhiteSpace(Model.User.Country))
                 {
-                    <span class="meta-item">📍 <strong>@Model.User.Country</strong></span>
+                    <span class="pf-meta-item">📍 <strong>@Model.User.Country</strong></span>
                 }
                 @if (Model.User.HourlyRate.HasValue && Model.User.Role == Workify_Full.Models.Enum.UserRole.Freelancer)
                 {
-                    <span class="meta-item">💰 <strong>@Model.User.HourlyRate.Value.ToString("N0") EGP/hr</strong></span>
+                    <span class="pf-meta-item">💰 <strong>@Model.User.HourlyRate.Value.ToString("N0") EGP/hr</strong></span>
                 }
-                <span class="meta-item">📅 Joined <strong>@Model.User.CreatedAt.ToString("MMM yyyy")</strong></span>
+                <span class="pf-meta-item">📅 Joined <strong>@Model.User.CreatedAt.ToString("MMM yyyy")</strong></span>
+                <span class="pf-meta-item">✉️ <strong>@Model.User.Email</strong></span>
             </div>
 
             @if (!string.IsNullOrWhiteSpace(Model.User.Skills))
             {
-                <div class="skill-chips">
+                <div class="pf-skills">
                     @foreach (var skill in Model.User.Skills.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0))
                     {
-                        <span class="skill-chip">@skill</span>
+                        <span class="pf-skill">@skill</span>
                     }
                 </div>
             }
 
-            <div class="profile-actions">
-                <a class="btn-edit" asp-action="EditProfile">✏ Edit Profile</a>
+            <div class="pf-actions">
+                <a class="pf-btn-edit" asp-action="EditProfile">✏ Edit Profile</a>
             </div>
         </div>
     </div>
 
     <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card accent">
-            <div class="stat-value">@Model.WalletAvailable.ToString("N2")</div>
-            <div class="stat-label">@Model.WalletCurrency Available</div>
+    <div class="pf-stats">
+        <div class="pf-stat accent">
+            <div class="pf-stat-val">@Model.WalletAvailable.ToString("N2")</div>
+            <div class="pf-stat-label">@Model.WalletCurrency Available</div>
         </div>
-        <div class="stat-card warn">
-            <div class="stat-value">@Model.WalletEscrow.ToString("N2")</div>
-            <div class="stat-label">@Model.WalletCurrency In Escrow</div>
+        <div class="pf-stat warn">
+            <div class="pf-stat-val">@Model.WalletEscrow.ToString("N2")</div>
+            <div class="pf-stat-label">@Model.WalletCurrency In Escrow</div>
         </div>
-        <div class="stat-card">
-            <div class="stat-value">@Model.AverageRating.ToString("0.0")</div>
-            <div class="stat-label">Avg Rating (@Model.Reviews.Count reviews)</div>
+        <div class="pf-stat">
+            <div class="pf-stat-val">@Model.AverageRating.ToString("0.0")</div>
+            <div class="pf-stat-label">Avg Rating (@Model.Reviews.Count reviews)</div>
         </div>
     </div>
 
     <!-- Reviews -->
-    <div class="section-title">Reviews</div>
+    <div class="pf-section-title">Reviews</div>
     @if (Model.Reviews.Count == 0)
     {
-        <div class="no-reviews">No reviews yet — complete a contract to receive your first one.</div>
+        <div class="pf-empty">No reviews yet — complete a contract to receive your first one.</div>
     }
     else
     {
-        <div class="reviews-list">
+        <div class="pf-reviews">
             @foreach (var review in Model.Reviews)
             {
                 var rInitials = string.Join("", (review.Reviewer?.FullName ?? "U").Split(' ')
                     .Take(2).Select(w => w.Length > 0 ? w[0].ToString().ToUpper() : ""));
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-avatar">@rInitials</div>
+                <div class="pf-review">
+                    <div class="pf-review-head">
+                        <div class="pf-review-av">@rInitials</div>
                         <div>
-                            <div class="reviewer-name">@(review.Reviewer?.FullName ?? "Anonymous")</div>
-                            <div class="star-row">
+                            <div class="pf-review-name">@(review.Reviewer?.FullName ?? "Anonymous")</div>
+                            <div class="pf-stars">
                                 @for (int i = 1; i <= 5; i++)
                                 {
-                                    <span class="star @(i <= review.Rating ? "" : "empty")">★</span>
+                                    <span class="pf-star @(i <= review.Rating ? "" : "empty")">★</span>
                                 }
                             </div>
                         </div>
-                        <span class="review-date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
+                        <span class="pf-review-date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(review.Comment))
                     {
-                        <p class="review-text">@review.Comment</p>
+                        <p class="pf-review-text">@review.Comment</p>
                     }
                 </div>
             }
         </div>
     }
-
 </div>

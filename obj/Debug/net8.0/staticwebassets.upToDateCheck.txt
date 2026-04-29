@@ -8,6 +8,7 @@ wwwroot\css\dashboard.css
 wwwroot\css\freelancer-dashboard.css
 wwwroot\css\how-it-works.css
 wwwroot\css\job-details.css
+wwwroot\css\jobs.css
 wwwroot\css\layout.css
 wwwroot\css\login.css
 wwwroot\css\main.css

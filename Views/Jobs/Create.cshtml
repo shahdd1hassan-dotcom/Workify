@@ -1,0 +1,143 @@
+@model Workify_Full.ViewModels.JobCreateViewModel
+@{
+    ViewData["Title"] = "Post a Job";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/jobs.css" asp-append-version="true" />
+
+<div class="container">
+    <div class="jb-create-wrap">
+        <!-- Intro -->
+        <div class="jb-create-intro">
+            <h1>Find the perfect freelancer</h1>
+            <p>Fill in the details below to create your job posting.</p>
+        </div>
+
+        <div class="jb-form-card">
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+            {
+                <div asp-validation-summary="All" class="validation-summary-errors"></div>
+            }
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- ── Section 1: Title & Category ── -->
+                <div class="jb-form-section">
+                    <div class="jb-form-section-title">Title &amp; Category</div>
+                    <div class="jb-form-section-sub">Give your job a clear title to attract the right freelancers.</div>
+
+                    <div class="jb-field">
+                        <label class="jb-field-label" asp-for="Title">Job Title</label>
+                        <input asp-for="Title" class="jb-field-input" placeholder="e.g. Senior React Developer for Fintech App" />
+                        <span asp-validation-for="Title" class="field-validation-error"></span>
+                        <div class="jb-field-hint">Be specific — titles like "Senior React Developer" get 3× more proposals.</div>
+                    </div>
+
+                    <div class="jb-field">
+                        <label class="jb-field-label" asp-for="Category">Category</label>
+                        <select asp-for="Category" class="jb-field-select">
+                            <option value="">Select a category…</option>
+                            <option>Web Development</option>
+                            <option>Mobile Development</option>
+                            <option>UI / UX Design</option>
+                            <option>Graphic Design</option>
+                            <option>Writing &amp; Content</option>
+                            <option>Marketing &amp; SEO</option>
+                            <option>Data Science &amp; Analytics</option>
+                            <option>Video &amp; Animation</option>
+                            <option>Finance &amp; Accounting</option>
+                            <option>Customer Support</option>
+                        </select>
+                        <span asp-validation-for="Category" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="jb-field">
+                        <label class="jb-field-label" asp-for="ExperienceLevel">Experience Level</label>
+                        <select asp-for="ExperienceLevel" class="jb-field-select">
+                            <option value="Entry">Entry Level — New to the field</option>
+                            <option value="Intermediate">Intermediate — Substantial experience</option>
+                            <option value="Expert">Expert — Highly experienced professionals</option>
+                        </select>
+                        <span asp-validation-for="ExperienceLevel" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <!-- ── Section 2: Description ── -->
+                <div class="jb-form-section">
+                    <div class="jb-form-section-title">Project Description</div>
+                    <div class="jb-form-section-sub">Help freelancers understand exactly what you need.</div>
+
+                    <div class="jb-field">
+                        <label class="jb-field-label" asp-for="Description">Description</label>
+                        <textarea asp-for="Description" class="jb-field-textarea"
+                                  placeholder="Describe your project in detail...&#10;&#10;What you'll do:&#10;- ...&#10;&#10;Requirements:&#10;- ..."></textarea>
+                        <span asp-validation-for="Description" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <!-- ── Section 3: Budget & Timeline ── -->
+                <div class="jb-form-section">
+                    <div class="jb-form-section-title">Budget &amp; Timeline</div>
+                    <div class="jb-form-section-sub">Set expectations so freelancers can send you a relevant proposal.</div>
+
+                    <!-- Budget Type Toggle -->
+                    <div class="jb-field">
+                        <label class="jb-field-label">Payment Type</label>
+                        <div class="jb-budget-toggle">
+                            <label class="jb-budget-option" id="opt-fixed" onclick="selectBudget('Fixed')">
+                                <input type="radio" name="BudgetType" value="Fixed" checked="@(Model.BudgetType == "Fixed" ? "checked" : null)" />
+                                <div class="jb-budget-option-title">💵 Fixed Price</div>
+                                <div class="jb-budget-option-desc">Pay a set amount for the entire project.</div>
+                            </label>
+                            <label class="jb-budget-option" id="opt-hourly" onclick="selectBudget('Hourly')">
+                                <input type="radio" name="BudgetType" value="Hourly" checked="@(Model.BudgetType == "Hourly" ? "checked" : null)" />
+                                <div class="jb-budget-option-title">🕐 Hourly Rate</div>
+                                <div class="jb-budget-option-desc">Pay based on time tracked.</div>
+                            </label>
+                        </div>
+                        <span asp-validation-for="BudgetType" class="field-validation-error"></span>
+                    </div>
+
+                    <!-- Budget Range -->
+                    <div class="jb-budget-row">
+                        <div class="jb-field">
+                            <label class="jb-field-label" asp-for="BudgetMin">Minimum Budget ($)</label>
+                            <input asp-for="BudgetMin" class="jb-field-input" type="number" min="1" placeholder="e.g. 500" />
+                            <span asp-validation-for="BudgetMin" class="field-validation-error"></span>
+                        </div>
+                        <div class="jb-field">
+                            <label class="jb-field-label" asp-for="BudgetMax">Maximum Budget ($)</label>
+                            <input asp-for="BudgetMax" class="jb-field-input" type="number" min="1" placeholder="e.g. 5000" />
+                            <span asp-validation-for="BudgetMax" class="field-validation-error"></span>
+                        </div>
+                    </div>
+
+                    <!-- Expiry Date -->
+                    <div class="jb-field">
+                        <label class="jb-field-label" asp-for="ExpiresAt">Expiry Date (Optional)</label>
+                        <input asp-for="ExpiresAt" class="jb-field-input" type="date" />
+                        <span asp-validation-for="ExpiresAt" class="field-validation-error"></span>
+                        <div class="jb-field-hint">Leave blank for no expiry.</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="jb-submit-btn">✦ Publish Job</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function selectBudget(type) {
+            document.getElementById('opt-fixed').classList.toggle('selected', type === 'Fixed');
+            document.getElementById('opt-hourly').classList.toggle('selected', type === 'Hourly');
+        }
+        // Init
+        var checkedRadio = document.querySelector('input[name="BudgetType"]:checked');
+        if (checkedRadio) selectBudget(checkedRadio.value);
+    </script>
+}

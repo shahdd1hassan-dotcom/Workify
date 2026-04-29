@@ -1,355 +1,199 @@
-﻿@{
+@{
     ViewData["Title"] = "Workify — Work. Without Limits.";
     Layout = "_Layout";
 }
 
-<style>
-    /* ── Tokens ── */
-    :root {
-        --brand:   #5B4FE9;
-        --brand2:  #7C6FF5;
-        --accent:  #F97316;
-        --surface: rgba(255,255,255,0.03);
-        --border:  rgba(255,255,255,0.08);
-    }
+<link rel="stylesheet" href="~/css/variables.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/utilities.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 
-    /* ── Hero ── */
-    .hero {
-        position: relative;
-        overflow: hidden;
-        padding: 5rem 1.5rem 4rem;
-        text-align: center;
-    }
-    .hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,79,233,0.22) 0%, transparent 70%);
-        pointer-events: none;
-    }
-    .hero-eyebrow {
-        display: inline-block;
-        background: rgba(91,79,233,0.18);
-        border: 1px solid rgba(91,79,233,0.35);
-        color: #9d94f5;
-        border-radius: 20px;
-        padding: 0.28rem 0.9rem;
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        margin-bottom: 1.5rem;
-    }
-    .hero-headline {
-        font-size: clamp(2.4rem, 6vw, 4rem);
-        font-weight: 900;
-        color: #fff;
-        line-height: 1.1;
-        margin-bottom: 1.25rem;
-        letter-spacing: -0.02em;
-    }
-    .hero-headline span {
-        background: linear-gradient(130deg, #7C6FF5, #F97316);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    .hero-sub {
-        color: rgba(255,255,255,0.55);
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto 2.5rem;
-        line-height: 1.65;
-    }
-    .hero-cta { display: flex; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
-    .btn-primary-lg {
-        background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
-        color: #fff; border: none; border-radius: 12px;
-        padding: 0.9rem 2.2rem; font-size: 1.05rem; font-weight: 700;
-        text-decoration: none; cursor: pointer;
-        transition: opacity 0.2s, transform 0.15s;
-        display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .btn-primary-lg:hover { opacity: 0.9; transform: translateY(-2px); color: #fff; }
-    .btn-ghost-lg {
-        background: transparent;
-        color: rgba(255,255,255,0.8);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 12px;
-        padding: 0.9rem 2rem; font-size: 1.05rem; font-weight: 600;
-        text-decoration: none;
-        transition: border-color 0.2s, background 0.2s;
-        display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .btn-ghost-lg:hover { border-color: #5B4FE9; background: rgba(91,79,233,0.1); color: #fff; }
-
-    /* ── Snapshot Card ── */
-    .hero-snapshot-row {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 3.5rem;
-    }
-    .snapshot-card {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.09);
-        border-radius: 16px; padding: 1.25rem 1.75rem;
-        min-width: 180px; text-align: center;
-    }
-    .snapshot-value { font-size: 1.6rem; font-weight: 800; color: #fff; }
-    .snapshot-label { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
-    .snapshot-card.accent .snapshot-value { background: linear-gradient(135deg,#5B4FE9,#7C6FF5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    .snapshot-card.orange .snapshot-value { color: #F97316; }
-
-    /* ── Marquee ── */
-    .marquee-wrap {
-        overflow: hidden;
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 0.85rem 0;
-        background: rgba(255,255,255,0.015);
-    }
-    .marquee-track {
-        display: flex;
-        gap: 2.5rem;
-        white-space: nowrap;
-        animation: marquee 28s linear infinite;
-    }
-    .marquee-track span { font-size: 0.9rem; color: rgba(255,255,255,0.45); flex-shrink: 0; }
-    .marquee-track span strong { color: rgba(255,255,255,0.75); }
-    @@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* ── Section ── */
-    .section { padding: 4rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .section-head { text-align: center; margin-bottom: 2.5rem; }
-    .section-head h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-    .section-head p { color: rgba(255,255,255,0.45); font-size: 1rem; }
-
-    /* ── Category pills ── */
-    .category-grid {
-        display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
-    }
-    .category-pill {
-        display: flex; align-items: center; gap: 0.6rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px; padding: 0.65rem 1.15rem;
-        color: rgba(255,255,255,0.75); text-decoration: none;
-        font-size: 0.9rem; font-weight: 500;
-        transition: border-color 0.2s, background 0.2s, color 0.2s;
-    }
-    .category-pill:hover { border-color: #5B4FE9; background: rgba(91,79,233,0.1); color: #fff; }
-    .category-pill .pill-icon { font-size: 1.1rem; }
-    .category-pill small { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-left: 0.25rem; }
-
-    /* ── How it works ── */
-    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .how-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 16px; padding: 1.75rem 1.5rem;
-        transition: border-color 0.2s;
-    }
-    .how-card:hover { border-color: rgba(91,79,233,0.4); }
-    .how-num {
-        width: 40px; height: 40px; border-radius: 50%;
-        background: linear-gradient(135deg, #5B4FE9, #7C6FF5);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 1rem;
-    }
-    .how-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
-    .how-desc { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
-
-    /* ── Testimonials ── */
-    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-    .testimonial-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 16px; padding: 1.5rem;
-    }
-    .testimonial-text { color: rgba(255,255,255,0.7); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1rem; font-style: italic; }
-    .testimonial-meta { display: flex; align-items: center; gap: 0.75rem; }
-    .t-avatar {
-        width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-    }
-    .t-name { font-weight: 700; color: #fff; font-size: 0.9rem; }
-    .t-role { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
-
-    /* ── CTA Banner ── */
-    .cta-banner {
-        margin: 2rem 1.5rem 4rem;
-        background: linear-gradient(135deg, rgba(91,79,233,0.18) 0%, rgba(249,115,22,0.12) 100%);
-        border: 1px solid rgba(91,79,233,0.3);
-        border-radius: 22px;
-        padding: 3.5rem 2rem;
-        text-align: center;
-    }
-    .cta-banner h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.6rem; }
-    .cta-banner p { color: rgba(255,255,255,0.5); margin-bottom: 2rem; font-size: 1rem; }
-
-    @@media (max-width: 768px) {
-        .how-grid, .testimonials-grid { grid-template-columns: 1fr; }
-    }
-    @@media (max-width: 480px) {
-        .hero-snapshot-row .snapshot-card { min-width: calc(50% - 0.5rem); }
-    }
-</style>
-
-<!-- ══ HERO ══ -->
-<section class="hero">
-    <div class="hero-eyebrow">✦ Workify Marketplace</div>
-    <h1 class="hero-headline">Work.<br><span>Without Limits.</span></h1>
-    <p class="hero-sub">Hire world-class specialists or land your next project with confidence — escrow protection, smart contracts, and real-time collaboration built in.</p>
-    <div class="hero-cta">
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <a class="btn-primary-lg" asp-controller="Account" asp-action="Profile">View My Profile →</a>
-        }
-        else
-        {
-            <a class="btn-primary-lg" asp-controller="Account" asp-action="Register">Get Started Free →</a>
-            <a class="btn-ghost-lg" asp-controller="Account" asp-action="Login">Log In</a>
-        }
-    </div>
-
-    <div class="hero-snapshot-row">
-        <div class="snapshot-card accent">
-            <div class="snapshot-value">3,540+</div>
-            <div class="snapshot-label">Active Projects</div>
-        </div>
-        <div class="snapshot-card">
-            <div class="snapshot-value">12,000+</div>
-            <div class="snapshot-label">Freelancer Profiles</div>
-        </div>
-        <div class="snapshot-card orange">
-            <div class="snapshot-value">$2.4M+</div>
-            <div class="snapshot-label">Paid via Escrow</div>
-        </div>
-        <div class="snapshot-card">
-            <div class="snapshot-value">4.9/5</div>
-            <div class="snapshot-label">Client Rating</div>
-        </div>
-    </div>
-</section>
-
-<!-- ══ MARQUEE ══ -->
-<div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee-track">
-        <span><strong>80+</strong> countries hiring on Workify</span>
-        <span><strong>97%</strong> milestone release success rate</span>
-        <span><strong>1.8M+</strong> messages exchanged monthly</span>
-        <span><strong>$2.4M+</strong> paid through secure escrow</span>
-        <span><strong>12,000+</strong> freelancer profiles</span>
-        <span>Median hire in <strong>26h</strong></span>
-        <span><strong>80+</strong> countries hiring on Workify</span>
-        <span><strong>97%</strong> milestone release success rate</span>
-        <span><strong>1.8M+</strong> messages exchanged monthly</span>
-        <span><strong>$2.4M+</strong> paid through secure escrow</span>
-        <span><strong>12,000+</strong> freelancer profiles</span>
-        <span>Median hire in <strong>26h</strong></span>
-    </div>
-</div>
-
-<!-- ══ CATEGORIES ══ -->
-<div class="section">
-    <div class="section-head">
-        <h2>Trending Skill Categories</h2>
-        <p>Search by demand hotspots and start faster.</p>
-    </div>
-    <div class="category-grid">
-        <a class="category-pill" href="#">
-            <span class="pill-icon">💻</span> Web Development <small>2,180 jobs</small>
-        </a>
-        <a class="category-pill" href="#">
-            <span class="pill-icon">🎨</span> UI/UX Design <small>1,240 jobs</small>
-        </a>
-        <a class="category-pill" href="#">
-            <span class="pill-icon">📢</span> Digital Marketing <small>780 jobs</small>
-        </a>
-        <a class="category-pill" href="#">
-            <span class="pill-icon">✍️</span> Technical Writing <small>650 jobs</small>
-        </a>
-        <a class="category-pill" href="#">
-            <span class="pill-icon">🎬</span> Video Production <small>320 jobs</small>
-        </a>
-        <a class="category-pill" href="#">
-            <span class="pill-icon">🤖</span> AI &amp; Machine Learning <small>940 jobs</small>
-        </a>
-    </div>
-</div>
-
-<!-- ══ HOW IT WORKS ══ -->
-<div class="section" style="padding-top:0;">
-    <div class="section-head">
-        <h2>How Workify Works</h2>
-        <p>Three simple steps between you and your first project.</p>
-    </div>
-    <div class="how-grid">
-        <div class="how-card">
-            <div class="how-num">1</div>
-            <div class="how-title">Create Your Profile</div>
-            <p class="how-desc">Sign up as a Client or Freelancer. Add your skills, bio, and hourly rate in minutes.</p>
-        </div>
-        <div class="how-card">
-            <div class="how-num">2</div>
-            <div class="how-title">Post or Propose</div>
-            <p class="how-desc">Clients post jobs; freelancers send proposals. Contracts and milestones lock in expectations.</p>
-        </div>
-        <div class="how-card">
-            <div class="how-num">3</div>
-            <div class="how-title">Work &amp; Get Paid</div>
-            <p class="how-desc">Funds are held in escrow and released when milestones are approved. Zero payment risk.</p>
-        </div>
-    </div>
-</div>
-
-<!-- ══ TESTIMONIALS ══ -->
-<div class="section" style="padding-top:0;">
-    <div class="section-head">
-        <h2>Trusted by Thousands</h2>
-        <p>Real words from clients and freelancers.</p>
-    </div>
-    <div class="testimonials-grid">
-        <div class="testimonial-card">
-            <p class="testimonial-text">"Within one week we staffed a full product squad. The shortlist quality was far better than generic job boards."</p>
-            <div class="testimonial-meta">
-                <img class="t-avatar" src="https://ui-avatars.com/api/?name=Nora+Saad&background=5B4FE9&color=fff&size=80" alt="Nora Saad" />
-                <div>
-                    <div class="t-name">Nora Saad</div>
-                    <div class="t-role">Product Lead, Stackmint</div>
+<main class="main-content no-sidebar landing-page">
+    <!-- ══ HERO ══ -->
+    <section class="hero section-sm">
+        <div class="container hero-grid">
+            <div class="hero-copy reveal revealed">
+                <p class="kicker">Workify Marketplace</p>
+                <h1>Work. Without Limits.</h1>
+                <p class="hero-subtitle">
+                    Hire world-class specialists or land your next project with
+                    confidence, escrow protection, and transparent collaboration.
+                </p>
+                <div class="hero-actions">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-lg">Browse Jobs</a>
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-ghost btn-lg">My Profile</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg">Hire Talent</a>
+                        <a asp-controller="Jobs" asp-action="Index" class="btn btn-ghost btn-lg">Find Work</a>
+                    }
                 </div>
             </div>
-        </div>
-        <div class="testimonial-card">
-            <p class="testimonial-text">"Milestone tracking removed all payment friction. I can focus on delivery because expectations are crystal clear."</p>
-            <div class="testimonial-meta">
-                <img class="t-avatar" src="https://ui-avatars.com/api/?name=Fady+Hassan&background=F97316&color=fff&size=80" alt="Fady Hassan" />
-                <div>
-                    <div class="t-name">Fady Hassan</div>
-                    <div class="t-role">Senior Frontend Engineer</div>
-                </div>
-            </div>
-        </div>
-        <div class="testimonial-card">
-            <p class="testimonial-text">"Workify made remote hiring feel local. We found an expert in 48 hours and shipped two weeks early."</p>
-            <div class="testimonial-meta">
-                <img class="t-avatar" src="https://ui-avatars.com/api/?name=Leila+Morris&background=22C55E&color=fff&size=80" alt="Leila Morris" />
-                <div>
-                    <div class="t-name">Leila Morris</div>
-                    <div class="t-role">COO, Orbit Studio</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- ══ CTA BANNER ══ -->
-@if (User.Identity?.IsAuthenticated != true)
-{
-    <div class="cta-banner">
-        <h2>Ready to get started?</h2>
-        <p>Join 12,000+ freelancers and clients already on the platform.</p>
-        <a class="btn-primary-lg" asp-controller="Account" asp-action="Register">Create Free Account →</a>
-    </div>
+            <div class="hero-panel reveal revealed" aria-hidden="true">
+                <article class="snapshot-card">
+                    <div class="snapshot-title">Live Platform Snapshot</div>
+                    <div class="snapshot-value">3,540 Active Projects</div>
+                    <div class="snapshot-meta">
+                        <span>✓ Verified clients</span>
+                        <span>⏱ Median hire in 26h</span>
+                    </div>
+                </article>
+                <article class="snapshot-strip">
+                    <div>
+                        <p>Total Paid</p>
+                        <h3>$2.4M+</h3>
+                    </div>
+                    <div>
+                        <p>Freelancers</p>
+                        <h3>12,000+</h3>
+                    </div>
+                    <div>
+                        <p>Client Rating</p>
+                        <h3>4.9/5</h3>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ TRUST MARQUEE ══ -->
+    <section class="trust-marquee" aria-hidden="true">
+        <div class="trust-track">
+            <span><strong>80+</strong> countries hiring on Workify</span>
+            <span><strong>97%</strong> milestone release success rate</span>
+            <span><strong>1.8M+</strong> messages exchanged monthly</span>
+            <span><strong>$2.4M+</strong> paid through secure escrow</span>
+            <span><strong>12,000+</strong> freelancer profiles</span>
+            <span><strong>80+</strong> countries hiring on Workify</span>
+            <span><strong>97%</strong> milestone release success rate</span>
+            <span><strong>1.8M+</strong> messages exchanged monthly</span>
+        </div>
+    </section>
+
+    <!-- ══ TRENDING CATEGORIES ══ -->
+    <section class="section container reveal revealed">
+        <div class="section-head">
+            <h2>Trending Skill Categories</h2>
+            <p>Search by demand hotspots and start faster.</p>
+        </div>
+        <div class="category-scroller" role="list">
+            <a class="category-pill" asp-controller="Jobs" asp-action="Index" asp-route-category="Web Development" role="listitem">
+                <span>💻</span>
+                <span>Web Development</span>
+                <small>2,180 jobs</small>
+            </a>
+            <a class="category-pill" asp-controller="Jobs" asp-action="Index" asp-route-category="UI / UX Design" role="listitem">
+                <span>🎨</span>
+                <span>UI/UX Design</span>
+                <small>1,240 jobs</small>
+            </a>
+            <a class="category-pill" asp-controller="Jobs" asp-action="Index" asp-route-category="Marketing & SEO" role="listitem">
+                <span>📢</span>
+                <span>Digital Marketing</span>
+                <small>780 jobs</small>
+            </a>
+            <a class="category-pill" asp-controller="Jobs" asp-action="Index" asp-route-category="Writing & Content" role="listitem">
+                <span>✍️</span>
+                <span>Technical Writing</span>
+                <small>650 jobs</small>
+            </a>
+            <a class="category-pill" asp-controller="Jobs" asp-action="Index" asp-route-category="Video & Animation" role="listitem">
+                <span>🎬</span>
+                <span>Video Production</span>
+                <small>320 jobs</small>
+            </a>
+        </div>
+    </section>
+
+    <!-- ══ TRUST SIGNALS ══ -->
+    <section class="section container trust-grid reveal revealed">
+        <div class="section-head">
+            <h2>Built On Trust Signals</h2>
+            <p>Proof that both sides can move fast and stay safe.</p>
+        </div>
+
+        <div class="trust-stats">
+            <article class="stat-card">
+                <p class="stat-label">Open Opportunities</p>
+                <p class="stat-value">3,500+</p>
+            </article>
+            <article class="stat-card earnings">
+                <p class="stat-label">Escrow Processed</p>
+                <p class="stat-value">$2.4M+</p>
+            </article>
+            <article class="stat-card">
+                <p class="stat-label">Repeat Clients</p>
+                <p class="stat-value">71%</p>
+            </article>
+            <article class="stat-card">
+                <p class="stat-label">Avg Match Time</p>
+                <p class="stat-value">26h</p>
+            </article>
+        </div>
+
+        <div class="testimonial-grid">
+            <article class="testimonial-card">
+                <p>
+                    "Within one week we staffed a full product squad. The shortlist
+                    quality was far better than generic job boards."
+                </p>
+                <div class="testimonial-meta">
+                    <img src="https://ui-avatars.com/api/?name=Nora+Saad&background=5B4FE9&color=fff&size=48" alt="Nora Saad" />
+                    <div>
+                        <strong>Nora Saad</strong>
+                        <span>Product Lead, Stackmint</span>
+                    </div>
+                </div>
+            </article>
+            <article class="testimonial-card">
+                <p>
+                    "Milestone tracking removed all payment friction. I can focus on
+                    delivery because expectations are crystal clear."
+                </p>
+                <div class="testimonial-meta">
+                    <img src="https://ui-avatars.com/api/?name=Fady+Hassan&background=F97316&color=fff&size=48" alt="Fady Hassan" />
+                    <div>
+                        <strong>Fady Hassan</strong>
+                        <span>Senior Frontend Engineer</span>
+                    </div>
+                </div>
+            </article>
+            <article class="testimonial-card">
+                <p>
+                    "Workify made remote hiring feel local. We found an expert in 48
+                    hours and shipped two weeks early."
+                </p>
+                <div class="testimonial-meta">
+                    <img src="https://ui-avatars.com/api/?name=Leila+Morris&background=22C55E&color=fff&size=48" alt="Leila Morris" />
+                    <div>
+                        <strong>Leila Morris</strong>
+                        <span>COO, Orbit Studio</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+@section Scripts {
+    <script>
+        // Intersection Observer for reveal animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("revealed");
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+        document.querySelectorAll(".reveal:not(.revealed)").forEach((el) => observer.observe(el));
+    </script>
 }

@@ -1,0 +1,162 @@
+@model Workify_Full.ViewModels.JobDetailsViewModel
+@{
+    ViewData["Title"] = Model.Job.Title;
+    Layout = "_Layout";
+
+    var elapsed = DateTime.UtcNow - Model.Job.CreatedAt;
+    var timeAgo = elapsed.TotalMinutes < 60 ? $"{(int)elapsed.TotalMinutes}m ago"
+        : elapsed.TotalHours < 24 ? $"{(int)elapsed.TotalHours}h ago"
+        : elapsed.TotalDays < 30 ? $"{(int)elapsed.TotalDays}d ago"
+        : Model.Job.CreatedAt.ToString("MMM d, yyyy");
+
+    var budgetText = Model.Job.BudgetType == "Hourly"
+        ? $"${Model.Job.BudgetMin:N0}–${Model.Job.BudgetMax:N0}/hr"
+        : $"${Model.Job.BudgetMin:N0}–${Model.Job.BudgetMax:N0}";
+
+    var statusClass = Model.Job.Status.ToString().ToLower();
+}
+
+<link rel="stylesheet" href="~/css/jobs.css" asp-append-version="true" />
+
+<div class="container" style="max-width:1100px; padding:1.5rem 1rem 3rem;">
+
+    <!-- Back link -->
+    <a asp-action="Index" style="display:inline-flex; align-items:center; gap:6px; color:var(--jb-text-muted); text-decoration:none; font-size:0.85rem; margin-bottom:16px; transition:color 0.15s;">
+        ← Back to Jobs
+    </a>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="jb-alert-error">⚠ @TempData["Error"]</div>
+    }
+
+    <!-- ═══ JOB HEADER CARD ═══ -->
+    <div class="jb-detail-header">
+        <div class="jb-client-row">
+            <div class="jb-client-info">
+                <div class="jb-client-avatar">@Model.ClientInitials</div>
+                <div>
+                    <div class="jb-client-name">@Model.ClientName</div>
+                    <div class="jb-client-meta">
+                        Member since @Model.ClientMemberSince.ToString("MMM yyyy") · @Model.ClientTotalJobs jobs posted
+                    </div>
+                </div>
+            </div>
+            <span class="jb-status jb-status-@statusClass">@Model.Job.Status</span>
+        </div>
+
+        <h1 class="jb-detail-title">@Model.Job.Title</h1>
+
+        <div class="jb-meta-row">
+            <span class="jb-meta-item">🕐 Posted @timeAgo</span>
+            <span class="jb-meta-item">💰 @Model.Job.BudgetType</span>
+            <span class="jb-meta-item">📊 @Model.Job.ExperienceLevel Level</span>
+            <span class="jb-meta-item">👥 @Model.ProposalCount applicants</span>
+            @if (Model.Job.ExpiresAt.HasValue)
+            {
+                <span class="jb-meta-item">📅 Expires @Model.Job.ExpiresAt.Value.ToString("MMM d, yyyy")</span>
+            }
+        </div>
+    </div>
+
+    <!-- ═══ TWO-COLUMN LAYOUT ═══ -->
+    <div class="jb-two-col">
+
+        <!-- LEFT — JOB BODY -->
+        <div class="jb-body">
+            <h2>Project Description</h2>
+            <p style="white-space:pre-line;">@Model.Job.Description</p>
+
+            <h2>Category</h2>
+            <p>@Model.Job.Category</p>
+
+            <h2>Experience Required</h2>
+            <p>@Model.Job.ExperienceLevel level</p>
+        </div>
+
+        <!-- RIGHT — STICKY PANEL -->
+        <div class="jb-sticky">
+
+            <!-- Price Card -->
+            <div class="jb-price-card">
+                <div class="jb-price-amount">@budgetText</div>
+                <div class="jb-price-sub">@Model.Job.BudgetType Price</div>
+
+                @if (!Model.IsClient && Model.Job.Status == Workify_Full.Models.Enum.JobStatus.Open)
+                {
+                    if (Model.HasAlreadyApplied)
+                    {
+                        <div class="jb-btn-outline" style="text-align:center; cursor:default; opacity:0.7;">
+                            ✓ Already Applied
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="#" class="jb-btn-apply">⚡ Apply Now →</a>
+                        <a href="#" class="jb-btn-outline">💬 Message Client</a>
+                    }
+                }
+
+                @if (Model.IsOwner)
+                {
+                    @if (Model.Job.Status == Workify_Full.Models.Enum.JobStatus.Open)
+                    {
+                        <form asp-action="Close" asp-route-id="@Model.Job.JobId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="jb-btn-warning"
+                                    onclick="return confirm('Are you sure you want to close this job?');">
+                                🔒 Close Job
+                            </button>
+                        </form>
+                    }
+                    @if (!Model.HasAcceptedProposals)
+                    {
+                        <form asp-action="Delete" asp-route-id="@Model.Job.JobId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="jb-btn-danger"
+                                    onclick="return confirm('Are you sure? This cannot be undone.');">
+                                🗑 Delete Job
+                            </button>
+                        </form>
+                    }
+                }
+
+                <div class="jb-divider-line"></div>
+
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Budget</span>
+                    <span class="jb-detail-value accent">@budgetText</span>
+                </div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Type</span>
+                    <span class="jb-detail-value">@Model.Job.BudgetType</span>
+                </div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Level</span>
+                    <span class="jb-detail-value">@Model.Job.ExperienceLevel</span>
+                </div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Proposals</span>
+                    <span class="jb-detail-value">@Model.ProposalCount</span>
+                </div>
+            </div>
+
+            <!-- About Client Card -->
+            <div class="jb-about-card">
+                <div class="jb-about-title">About the Client</div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Name</span>
+                    <span class="jb-detail-value">@Model.ClientName</span>
+                </div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Jobs Posted</span>
+                    <span class="jb-detail-value">@Model.ClientTotalJobs</span>
+                </div>
+                <div class="jb-detail-row">
+                    <span class="jb-detail-label">Member Since</span>
+                    <span class="jb-detail-value">@Model.ClientMemberSince.ToString("MMM yyyy")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
